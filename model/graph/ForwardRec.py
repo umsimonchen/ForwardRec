@@ -70,8 +70,43 @@ class ForwardRec(GraphRecommender):
                     _, neg_idx = torch.sort(torch.mul(torch.randn_like(neg_idx), neg_idx), dim=1, descending=True, stable=True)
                     neg_idx = neg_idx[:,0]
 					
+					# negative sample generation w/o neg_factor
+					# masked = self.unobserved_adj.to(torch.float)[user_idx]
+					# ui_score = torch.matmul(user_temp[user_idx], item_temp.transpose(0, 1))
+					# ui_score = torch.mul(masked, ui_score) # masked observed items
+					# values, indices = torch.sort(ui_score, dim=1, descending=True, stable=True)
+					# min_pos = torch.min((values>0).sum(dim=1, keepdim=True))
+					# y_all = torch.log(values[:,:min_pos])
+					
+					# x_all = torch.arange(min_pos).unsqueeze(0).repeat(len(user_idx),1).to(torch.float).cuda()
+					# xmean_all = torch.tensor((min_pos-1)/2, dtype=torch.float).cuda()
+					# ymean_all = y_all.mean(dim=1, keepdim=True)
+					# k_all = torch.mul((x_all-xmean_all), (y_all-ymean_all)).sum(dim=1, keepdim=True) / torch.square(x_all-xmean_all).sum(dim=1, keepdim=True)
+					# b_all = ymean_all - k_all*xmean_all
+					# ydiff_all = y_all - torch.mul(x_all, k_all) - b_all
+					# ydiffmean_all = ydiff_all.mean(dim=1, keepdim=True)
+					# ydiffvar_all = torch.square(ydiffmean_all - ydiff_all).sum(dim=1, keepdim=True) / min_pos
+					
+					# x_top = torch.arange(self.max_N).unsqueeze(0).repeat(len(user_idx),1).cuda()
+					# y_top = y_all[:, :self.max_N]
+					# ymean_top = y_top.mean(dim=1, keepdim=True)
+					# xmean_top = torch.tensor((self.max_N-1)/2, dtype=torch.float).cuda()
+					# k_top = torch.mul((x_top-xmean_top), (y_top-ymean_top)).sum(dim=1, keepdim=True) / torch.square(x_top-xmean_top).sum(dim=1, keepdim=True)
+					# b_top = ymean_top - k_top*xmean_top
+					# ydiff_top = y_top - torch.mul(x_top, k_top) - b_top
+					# ydiffmean_top = ydiff_top.mean(dim=1, keepdim=True)
+					# ydiffvar_top = torch.square(ydiffmean_top - ydiff_top).sum(dim=1, keepdim=True) / (self.max_N)
+					
+					# ydiff1 = torch.abs(y_all - torch.mul(k_all, x_all) - b_all)
+					# ydiff2 = torch.abs(y_all - torch.mul(k_top, x_all) - b_top)
+					# neg = (ydiff1>=2*torch.sqrt(ydiffvar_all)) & (ydiff2>=2*torch.sqrt(ydiffvar_top))
+					# neg[:,:self.max_N] = False
+					# neg = torch.mul(neg.to(torch.float), torch.rand_like(neg.to(torch.float)))
+					# max_idx = torch.argmax(neg, dim=1, keepdim=True)
+					# neg_idx = torch.gather(indices, 1, max_idx).squeeze(1)
+					
 					# Backward and optimize
-                    user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[random_neg_idx]
+                    user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
                     batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
                     optimizer.zero_grad()
                     batch_loss.backward()
