@@ -10,6 +10,8 @@ import numpy as np
 import random
 import pickle
 
+# The code of ForwardRec here is based on LightGCN for the clear demonstration. For SGL w/ FF & RHNS, please go the SGL.py
+
 seed = 0
 np.random.seed(seed)
 random.seed(seed)
