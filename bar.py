@@ -64,13 +64,13 @@ ff_tt = [133,269,781,2687]
 
 x = np.arange(len(labels))  # the label locations
 width = 0.2  # the width of the bars
-fig1, ax1 = plt.subplots(1,3,figsize=(15, 6))
-plt.subplots_adjust(top=0.715,
-                    bottom=0.065,
-                    left=0.070,
-                    right=0.99,
-                    hspace=0.170,
-                    wspace=0.330)
+fig1, ax1 = plt.subplots(1,3,figsize=(16, 6))
+plt.subplots_adjust(top=0.8,
+bottom=0.05,
+left=0.055,
+right=0.97,
+hspace=0.17,
+wspace=0.33)
 rects1 = ax1[0].bar(x - width/3*4, lightgcn_tpe, width/3*2, label='LightGCN', color=plt.cm.Set3(6))
 rects2 = ax1[0].bar(x - width/3*2, ltgnn_tpe, width/3*2, label='LTGNN', color=plt.cm.Set3(2))
 rects3 = ax1[0].bar(x, mixgcf_tpe, width/3*2, label='MixGCF', color=plt.cm.Set3(3))
