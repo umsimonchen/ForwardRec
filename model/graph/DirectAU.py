@@ -10,6 +10,9 @@ import os
 import numpy as np
 import random
 
+# paper: Towards Representation Alignment and Uniformity in Collaborative Filtering. KDD'22
+# https://github.com/THUwangcy/DirectAU
+
 seed = 0
 np.random.seed(seed)
 random.seed(seed)

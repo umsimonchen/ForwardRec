@@ -11,6 +11,7 @@ import numpy as np
 import random
 
 # Paper: Are graph augmentations necessary? simple graph contrastive learning for recommendation. SIGIR'22
+# https://github.com/Coder-Yu/SELFRec/blob/main/model/graph/SimGCL.py
 
 seed = 0
 np.random.seed(seed)

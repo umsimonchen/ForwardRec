@@ -11,6 +11,7 @@ import numpy as np
 import random
 import pickle
 # paper: LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation ICLR'23
+# https://github.com/HKUDS/LightGCL
 
 seed = 0
 np.random.seed(seed)
@@ -138,7 +139,7 @@ class LightGCL_Encoder(nn.Module):
     def forward(self, dropped_adj):
         
         # please get the eigenvalues and eigenvectors by eigendecomp.py
-        with open('dataset/yelp2018/PGSP', 'rb') as fp: # choose the dataset folder
+        with open('dataset/gowalla/PGSP', 'rb') as fp: # choose the dataset folder
             eigen = pickle.load(fp)
         val = eigen[0]
         vec = eigen[1]

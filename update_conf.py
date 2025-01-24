@@ -9,14 +9,13 @@ import pickle
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-lamda", type=float)
-parser.add_argument("-eps", type=float)
+parser.add_argument("-n_layer", type=int)
 args = parser.parse_args()
 
-with open('conf/SGL.conf', 'r') as fp:
+with open('conf/LGCN.conf', 'r') as fp:
     lines = fp.readlines()
 
-lines[10] = "SGL=-n_layer 4 -temp 0.2 -augtype 1 -lambda %f -droprate %f"%(args.lamda, args.eps)+"\n"
+lines[10] = "LGCN=-n_layer %d -frequency 100"%(args.n_layer)+"\n"
 
-with open('conf/SGL.conf', 'w') as fp:
+with open('conf/LGCN.conf', 'w') as fp:
     fp.writelines(lines)

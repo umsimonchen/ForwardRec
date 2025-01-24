@@ -11,6 +11,7 @@ import random
 import pickle
 import gc
 # paper: SGFCF: How Powerful is Graph Filtering for Recommendation. KDD'24
+# https://github.com/tanatosuu/sgfcf
 
 seed = 0
 np.random.seed(seed)

@@ -13,6 +13,7 @@ import scipy as sp
 import scipy.sparse.linalg
 import pickle
 # paper: LGCN: Low-Pass Graph Convolutional Network for Recommendation. AAAI'22
+# https://github.com/Wenhui-Yu/LCFN
 
 seed = 0
 np.random.seed(seed)
@@ -36,6 +37,17 @@ class LGCN(GraphRecommender):
         self.unobserved_adj = torch.logical_not(TorchGraphInterface.convert_sparse_mat_to_tensor(self.data.interaction_mat).cuda().to_dense().to(torch.bool)).to(torch.float32)
         self.model = LGCN_Encoder(self.data, self.emb_size, self.n_layers, self.frequency)
         
+        self.binary = self.data.interaction_mat.tocoo()
+        self.binary_row = self.binary.row
+        self.binary_col = self.binary.col
+        self.binary_data = self.binary.data
+        
+        self.binary_row_t = torch.tensor(self.binary_row, dtype=torch.int32)
+        self.binary_col_t = torch.tensor(self.binary_col, dtype=torch.int32)
+        self.binary_data_t = torch.tensor(self.binary_data, dtype=torch.bool)
+        self.observed_adj = torch.sparse_coo_tensor(torch.stack([self.binary_row_t, self.binary_col_t]), self.binary_data_t, (self.data.user_num, self.data.item_num), dtype=torch.bool)
+        self.unobserved_adj = ~(self.observed_adj.to_dense()).cuda()
+        
     def train(self):
         model = self.model.cuda()
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lRate)
@@ -46,19 +58,32 @@ class LGCN(GraphRecommender):
                 user_idx, pos_idx, neg_idx = batch
                 rec_user_emb, rec_item_emb = model()
                 
-                # # w/ NS
-                # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
-                # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True)
-                # neg_idx = torch.zeros_like(ui_score, dtype=torch.float32)
-                # neg_idx.scatter_(1, indices[:,:int(0.06*self.data.item_num)], 1.0)
-                # neg_idx = torch.mul(neg_idx, self.unobserved_adj[user_idx])
-                # _, neg_idx = torch.sort(torch.mul(torch.randn_like(neg_idx), neg_idx), dim=1, descending=True, stable=True)
-                # neg_idx = neg_idx[:,0]
+            	# # negative sample generation w/ neg_factor - memory saved, smaller interacted mat
+             #    # mask = np.isin(self.binary_row, [user_idx])
+             #    # index_dict = {value: index for index, value in enumerate(user_idx)}
+             #    # mapped_row = [index_dict[element] for element in self.binary_row[mask]]
+             #    # i = torch.LongTensor(np.array([mapped_row, self.binary_col[mask]]))
+             #    # v = torch.FloatTensor(self.binary_data[mask])
+             #    # self.unobserved_adj = torch.logical_not(torch.sparse_coo_tensor(i, v, [len(user_idx), self.data.item_num]).cuda().to_dense().to(torch.bool)).to(torch.float32)    
                 
-                # negative sample generation w/o rejective
-                # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
-                # ui_score = torch.clamp(ui_score, min=0.0)
-                # neg_idx = torch.multinomial(ui_score, 1, replacement=False).squeeze(1)
+             #    # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
+             #    # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True) # for stable sampling - 1-1
+             #    # # _, indices = torch.topk(ui_score, int(self.neg_factor*self.data.item_num*1), dim=1) # for faster sampling - 1-2
+             #    # neg_idx = torch.zeros_like(ui_score, dtype=torch.float32)
+             #    # # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], 1.0) # for stable sampling - 2-1
+             #    # neg_idx.scatter_(1, indices, 1.0) # for faster sampling - 2-2
+             #    # neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.half)
+             #    # neg_idx = torch.multinomial(neg_idx+1e-4, 1).squeeze(1)
+                
+             #    # negative sampling generation w/ neg_factor - time saved
+             #    ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
+             #    # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True) # for stable sampling - 1-1
+             #    _, indices = torch.topk(ui_score, int(self.neg_factor*self.data.item_num*1), dim=1) # for faster sampling - 1-2
+             #    neg_idx = torch.zeros_like(ui_score, dtype=torch.bool)
+             #    # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], True) # for stable sampling - 2-1
+             #    neg_idx.scatter_(1, indices, 1.0) # for faster sampling - 2-2
+             #    neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.half)
+             #    neg_idx = torch.multinomial(neg_idx+1e-4, 1).squeeze(1)
                 
                 user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
                 batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
@@ -93,10 +118,9 @@ class LGCN_Encoder(nn.Module):
         self.layers = n_layers
         self.frequency = frequency
         self.norm_adj = data.norm_adj
-        # with open('amazon-beauty', 'wb') as fp:
-        #     pickle.dump(self.norm_adj, fp)
+
         # please get the eigenvalues and eigenvectors by eigendecomp.py
-        with open('dataset/lastfm/eigen','rb') as fp:
+        with open('dataset/gowalla/eigen','rb') as fp:
             [self.e, self.v] = pickle.load(fp)
         self.e = torch.tensor(self.e).cuda().float()
         self.v = torch.tensor(self.v).cuda().float()
@@ -165,6 +189,16 @@ class LGCN_Encoder(nn.Module):
 #         self.unobserved_adj = torch.logical_not(TorchGraphInterface.convert_sparse_mat_to_tensor(self.data.interaction_mat).cuda().to_dense().to(torch.bool)).to(torch.float32)
 #         self.model = LGCN_Encoder(self.data, self.emb_size, self.n_layers, self.frequency)
 #         
+#         self.binary = self.data.interaction_mat.tocoo()
+#         self.binary_row = self.binary.row
+#         self.binary_col = self.binary.col
+#         self.binary_data = self.binary.data
+#         
+#         self.binary_row_t = torch.tensor(self.binary_row, dtype=torch.int32)
+#         self.binary_col_t = torch.tensor(self.binary_col, dtype=torch.int32)
+#         self.binary_data_t = torch.tensor(self.binary_data, dtype=torch.bool)
+#         self.observed_adj = torch.sparse_coo_tensor(torch.stack([self.binary_row_t, self.binary_col_t]), self.binary_data_t, (self.data.user_num, self.data.item_num), dtype=torch.bool)
+#         self.unobserved_adj = ~(self.observed_adj.to_dense()).cuda()
 # 
 #     def train(self):
 #         model = self.model.cuda()
@@ -185,14 +219,32 @@ class LGCN_Encoder(nn.Module):
 #                     user_idx, pos_idx, neg_idx = batch
 #                     rec_user_emb, rec_item_emb = model(self.current_layer)
 #                     
-#                     # w/ NS
+#                 	# negative sample generation w/ neg_factor - memory saved, smaller interacted mat
+#                     # mask = np.isin(self.binary_row, [user_idx])
+#                     # index_dict = {value: index for index, value in enumerate(user_idx)}
+#                     # mapped_row = [index_dict[element] for element in self.binary_row[mask]]
+#                     # i = torch.LongTensor(np.array([mapped_row, self.binary_col[mask]]))
+#                     # v = torch.FloatTensor(self.binary_data[mask])
+#                     # self.unobserved_adj = torch.logical_not(torch.sparse_coo_tensor(i, v, [len(user_idx), self.data.item_num]).cuda().to_dense().to(torch.bool)).to(torch.float32)    
+#                     
 #                     # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
-#                     # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True)
+#                     # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True) # for stable sampling - 1-1
+#                     # # _, indices = torch.topk(ui_score, int(self.neg_factor*self.data.item_num*1), dim=1) # for faster sampling - 1-2
 #                     # neg_idx = torch.zeros_like(ui_score, dtype=torch.float32)
-#                     # neg_idx.scatter_(1, indices[:,:int(0.06*self.data.item_num)], 1.0)
-#                     # neg_idx = torch.mul(neg_idx, self.unobserved_adj[user_idx])
-#                     # _, neg_idx = torch.sort(torch.mul(torch.randn_like(neg_idx), neg_idx), dim=1, descending=True, stable=True)
-#                     # neg_idx = neg_idx[:,0]
+#                     # # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], 1.0) # for stable sampling - 2-1
+#                     # neg_idx.scatter_(1, indices, 1.0) # for faster sampling - 2-2
+#                     # neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.half)
+#                     # neg_idx = torch.multinomial(neg_idx+1e-4, 1).squeeze(1)
+#                     
+#                     # negative sampling generation w/ neg_factor - time saved
+#                     ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
+#                     # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True) # for stable sampling - 1-1
+#                     _, indices = torch.topk(ui_score, int(self.neg_factor*self.data.item_num*1), dim=1) # for faster sampling - 1-2
+#                     neg_idx = torch.zeros_like(ui_score, dtype=torch.bool)
+#                     # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], True) # for stable sampling - 2-1
+#                     neg_idx.scatter_(1, indices, 1.0) # for faster sampling - 2-2
+#                     neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.half)
+#                     neg_idx = torch.multinomial(neg_idx+1e-4, 1).squeeze(1)
 #                     
 #                     user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
 #                     batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
@@ -233,7 +285,7 @@ class LGCN_Encoder(nn.Module):
 #         self.layers = n_layers
 #         self.frequency = frequency
 #         self.norm_adj = data.norm_adj
-#         with open('dataset/amazon-beauty/eigen','rb') as fp: # please read the correct eigenvalues when running this code
+#         with open('dataset/gowalla/eigen','rb') as fp: # please read the correct eigenvalues when running this code
 #             [self.e, self.v] = pickle.load(fp)
 #         self.v = torch.tensor(self.v).cuda().float()
 #         self.e = torch.tensor(self.e).cuda().float()
@@ -262,6 +314,5 @@ class LGCN_Encoder(nn.Module):
 #         user_all_embeddings = all_embeddings[:self.data.user_num]
 #         item_all_embeddings = all_embeddings[self.data.user_num:]
 #         return user_all_embeddings, item_all_embeddings
+# 
 # =============================================================================
-
-

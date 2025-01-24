@@ -1,3 +1,4 @@
+
 # Original code
 import torch
 import torch.nn as nn
@@ -9,8 +10,8 @@ from util.loss_torch import bpr_loss,l2_reg_loss
 import pickle
 
 # paper: MixGCF: An Improved Training Method for Graph Neural Network-based Recommender Systems. KDD'21
-
-#Note: The backbone is LightGCN due to its better performance
+# https://github.com/huangtinglin/MixGCF
+# Note: The backbone is LightGCN due to its better performance
 
 class MixGCF(GraphRecommender):
     def __init__(self, conf, training_set, test_set):
@@ -19,8 +20,7 @@ class MixGCF(GraphRecommender):
         self.n_layers = int(args['-n_layer'])
         self.n_negs = int(args['-n_negs'])
         self.model = MixGCF_Encoder(self.data, self.emb_size, self.n_negs,self.n_layers)
-        self.unobserved_adj = torch.logical_not(TorchGraphInterface.convert_sparse_mat_to_tensor(self.data.interaction_mat).cuda().to_dense().to(torch.bool)).to(torch.float32)
-
+        
     def train(self):
         record_list = []
         loss_list = []
@@ -50,8 +50,8 @@ class MixGCF(GraphRecommender):
         with open('performance.txt','a') as fp:
             fp.write(str(self.bestPerformance[1])+"\n")
         # record training loss        
-        with open('training_record','wb') as fp:
-            pickle.dump([record_list, loss_list], fp)
+        # with open('training_record','wb') as fp:
+        #     pickle.dump([record_list, loss_list], fp)
 
 
     def save(self):
@@ -157,8 +157,8 @@ class MixGCF_Encoder(nn.Module):
 # from util.loss_torch import bpr_loss,l2_reg_loss
 # 
 # # paper: MixGCF: An Improved Training Method for Graph Neural Network-based Recommender Systems. KDD'21
-# 
-# #Note: The backbone is LightGCN due to its better performance
+# # https://github.com/huangtinglin/MixGCF
+# # Note: The backbone is LightGCN due to its better performance
 # 
 # class MixGCF(GraphRecommender):
 #     def __init__(self, conf, training_set, test_set):
@@ -322,7 +322,5 @@ class MixGCF_Encoder(nn.Module):
 #         item_all_embeddings = ego_embeddings[self.data.user_num:]
 #         return user_all_embeddings, item_all_embeddings
 # 
+# 
 # =============================================================================
-
-
-

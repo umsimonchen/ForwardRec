@@ -10,6 +10,7 @@ import os
 import numpy as np
 import random
 # paper: DiffNet++: A Neural Influence and Interest Diffusion Network for Social Recommendation. TKDE'22
+# https://github.com/PeiJieSun/diffnet/tree/master/Diffnet++
 
 seed = 0
 np.random.seed(seed)

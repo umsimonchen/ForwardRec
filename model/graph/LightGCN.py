@@ -10,6 +10,7 @@ import numpy as np
 import random
 import pickle
 # paper: LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation. SIGIR'20
+# https://github.com/kuandeng/LightGCN
 
 seed = 0
 np.random.seed(seed)
@@ -30,7 +31,11 @@ class LightGCN(GraphRecommender):
         args = OptionConf(self.config['LightGCN'])
         self.n_layers = int(args['-n_layer'])
         self.model = LightGCN_Encoder(self.data, self.emb_size, self.n_layers)
-        self.unobserved_adj = torch.logical_not(TorchGraphInterface.convert_sparse_mat_to_tensor(self.data.interaction_mat).cuda().to_dense().to(torch.bool)).to(torch.float32)
+        
+        self.binary = self.data.interaction_mat.tocoo()
+        self.binary_row = self.binary.row
+        self.binary_col = self.binary.col
+        self.binary_data = self.binary.data
 
     def train(self):
         record_list = []
@@ -44,14 +49,27 @@ class LightGCN(GraphRecommender):
                 user_idx, pos_idx, neg_idx = batch
                 rec_user_emb, rec_item_emb = model()
                 
-                # # w/ NS
+                # # w/ RHNS
+                # self.neg_factor = 0.02
+                # mask = np.isin(self.binary_row, [user_idx])
+                # index_dict = {value: index for index, value in enumerate(user_idx)}
+                # mapped_row = [index_dict[element] for element in self.binary_row[mask]]
+                # i = torch.LongTensor(np.array([mapped_row, self.binary_col[mask]]))
+                # v = torch.FloatTensor(self.binary_data[mask])
+                # self.unobserved_adj = torch.logical_not(torch.sparse_coo_tensor(i, v, [len(user_idx), self.data.item_num]).cuda().to_dense().to(torch.bool)).to(torch.float32)    
+                    
                 # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
                 # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True)
                 # neg_idx = torch.zeros_like(ui_score, dtype=torch.float32)
-                # neg_idx.scatter_(1, indices[:,:int(0.06*self.data.item_num)], 1.0)
-                # neg_idx = torch.mul(neg_idx, self.unobserved_adj[user_idx])
+                # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], 1.0)
+                # neg_idx = torch.logical_and(neg_idx, self.unobserved_adj).to(torch.float)
                 # _, neg_idx = torch.sort(torch.mul(torch.randn_like(neg_idx), neg_idx), dim=1, descending=True, stable=True)
                 # neg_idx = neg_idx[:,0]
+                
+                # w/ HNS
+                # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
+                # ui_score = torch.clamp(ui_score, min=0.0)
+                # neg_idx = torch.multinomial(ui_score, 1, replacement=False).squeeze(1)
                 
                 user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
                 batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
@@ -71,9 +89,9 @@ class LightGCN(GraphRecommender):
         with open('performance.txt','a') as fp:
             fp.write(str(self.bestPerformance[1])+"\n")
         # record training loss        
-        with open('training_record','wb') as fp:
-            pickle.dump([record_list, loss_list], fp)
-
+        # with open('training_record','wb') as fp:
+        #     pickle.dump([record_list, loss_list], fp)
+        
     def save(self):
         with torch.no_grad():
             self.best_user_emb, self.best_item_emb = self.model.forward()

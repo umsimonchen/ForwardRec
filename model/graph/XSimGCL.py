@@ -10,6 +10,7 @@ import os
 import numpy as np
 import random
 # Paper: XSimGCL - Towards Extremely Simple Graph Contrastive Learning for Recommendation
+# https://github.com/Coder-Yu/SELFRec/blob/main/model/graph/XSimGCL.py
 
 seed = 0
 np.random.seed(seed)

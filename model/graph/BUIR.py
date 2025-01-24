@@ -9,6 +9,7 @@ from base.torch_interface import TorchGraphInterface
 
 
 # paper: Bootstrapping User and Item Representations for One-Class Collaborative Filtering. SIGIR'21
+# No official open-source given
 
 
 class BUIR(GraphRecommender):

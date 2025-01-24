@@ -8,6 +8,7 @@ from base.torch_interface import TorchGraphInterface
 from util.loss_torch import bpr_loss, l2_reg_loss, InfoNCE
 import faiss
 # paper: Improving Graph Collaborative Filtering with Neighborhood-enriched Contrastive Learning. WWW'22
+# https://github.com/RUCAIBox/NCL
 
 
 class NCL(GraphRecommender):
@@ -34,7 +35,7 @@ class NCL(GraphRecommender):
         self.item_centroids, self.item_2cluster = self.run_kmeans(item_embeddings)
 
     def run_kmeans(self, x):
-        """Run K-means algorithm to get k clusters of the input tensor x        """
+        """Run K-means algorithm to get k clusters of the input tensor x on CPU       """
         kmeans = faiss.Kmeans(d=self.emb_size, k=self.k, gpu=True)
         kmeans.train(x)
         cluster_cents = kmeans.centroids
@@ -49,6 +50,7 @@ class NCL(GraphRecommender):
         user2cluster = self.user_2cluster[user_idx]
         user2centroids = self.user_centroids[user2cluster]
         proto_nce_loss_user = InfoNCE(user_emb[user_idx],user2centroids,self.ssl_temp) * self.batch_size
+        
         item2cluster = self.item_2cluster[item_idx]
         item2centroids = self.item_centroids[item2cluster]
         proto_nce_loss_item = InfoNCE(item_emb[item_idx],item2centroids,self.ssl_temp) * self.batch_size
@@ -87,6 +89,7 @@ class NCL(GraphRecommender):
         model = self.model.cuda()
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lRate)
         for epoch in range(self.maxEpoch):
+            # e-step only do the first few epoch
             if epoch >= 20:
                 self.e_step()
             for n, batch in enumerate(next_batch_pairwise(self.data, self.batch_size)):
@@ -100,7 +103,7 @@ class NCL(GraphRecommender):
                 ssl_loss = self.ssl_layer_loss(context_emb,initial_emb,user_idx,pos_idx)
                 warm_up_loss = rec_loss + l2_reg_loss(self.reg, user_emb, pos_item_emb, neg_item_emb)/self.batch_size  + ssl_loss
 
-                if epoch<20: #warm_up
+                if epoch<20: #warm_up without m-step
                     optimizer.zero_grad()
                     warm_up_loss.backward()
                     optimizer.step()

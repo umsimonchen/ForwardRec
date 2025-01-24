@@ -9,8 +9,7 @@ import os
 import numpy as np
 import random
 import pickle
-
-# The code of ForwardRec here is based on LightGCN for the clear demonstration. For SGL w/ FF & RHNS, please go the SGL.py
+import time
 
 seed = 0
 np.random.seed(seed)
@@ -32,10 +31,18 @@ class ForwardRec(GraphRecommender):
         self.n_layers = int(args['-n_layer'])
         self.neg_factor = float(args['-neg_factor'])
         self.model = ForwardRec_Encoder(self.data, self.emb_size, self.n_layers)
-		# not purchased, we need
-        self.unobserved_adj = torch.logical_not(TorchGraphInterface.convert_sparse_mat_to_tensor(self.data.interaction_mat).cuda().to_dense().to(torch.float32))
-        #self.observed_adj = TorchGraphInterface.convert_sparse_mat_to_tensor(self.data.interaction_mat).cuda().to_dense().to(torch.float32)
         
+        self.binary = self.data.interaction_mat.tocoo()
+        self.binary_row = self.binary.row
+        self.binary_col = self.binary.col
+        self.binary_data = self.binary.data
+        
+        self.binary_row_t = torch.tensor(self.binary_row, dtype=torch.int32)
+        self.binary_col_t = torch.tensor(self.binary_col, dtype=torch.int32)
+        self.binary_data_t = torch.tensor(self.binary_data, dtype=torch.bool)
+        self.observed_adj = torch.sparse_coo_tensor(torch.stack([self.binary_row_t, self.binary_col_t]), self.binary_data_t, (self.data.user_num, self.data.item_num), dtype=torch.bool)
+        self.unobserved_adj = ~(self.observed_adj.to_dense()).cuda()
+    
     def train(self):
         record_list = []
         loss_list = []
@@ -47,29 +54,48 @@ class ForwardRec(GraphRecommender):
             last_performance = []
             epoch = 0
             best_epoch = 0
-			# Refresh the best performance
             self.bestPerformance = []
             
-			# Layer normalization
+            # Layer normalization
             if self.current_layer != 0:
                 model.embedding_dict['user_emb'] = nn.functional.normalize(model.embedding_dict['user_emb'], p=2, dim=1)
                 model.embedding_dict['item_emb'] = nn.functional.normalize(model.embedding_dict['item_emb'], p=2, dim=1)
             optimizer = torch.optim.Adam(model.parameters(), lr=self.lRate)
             while not early_stopping:
+                s = time.time()
                 for n, batch in enumerate(next_batch_pairwise(self.data, self.batch_size)):
-                    user_idx, pos_idx, random_neg_idx = batch
+                    user_idx, pos_idx, _ = batch
                     rec_user_emb, rec_item_emb = model()
-					
-					# negative sample generation w/ neg_factor
+    					
+                    # negative sample generation w/ neg_factor - memory saved, smaller interacted mat
+                    # mask = np.isin(self.binary_row, [user_idx])
+                    # index_dict = {value: index for index, value in enumerate(user_idx)}
+                    # mapped_row = [index_dict[element] for element in self.binary_row[mask]]
+                    # i = torch.LongTensor(np.array([mapped_row, self.binary_col[mask]]))
+                    # v = torch.FloatTensor(self.binary_data[mask])
+                    # self.unobserved_adj = torch.logical_not(torch.sparse_coo_tensor(i, v, [len(user_idx), self.data.item_num]).cuda().to_dense().to(torch.bool)).to(torch.float32)    
+                    
+                    # ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
+                    # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True) # for stable sampling - 1-1
+                    # # _, indices = torch.topk(ui_score, int(self.neg_factor*self.data.item_num*1), dim=1) # for faster sampling - 1-2
+                    # neg_idx = torch.zeros_like(ui_score, dtype=torch.float32)
+                    # # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], 1.0) # for stable sampling - 2-1
+                    # neg_idx.scatter_(1, indices, 1.0) # for faster sampling - 2-2
+                    # neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.half)
+                    # neg_idx = torch.multinomial(neg_idx+1e-4, 1).squeeze(1)
+                    
+                    # negative sampling generation w/ neg_factor - time saved
                     ui_score = torch.matmul(rec_user_emb[user_idx], rec_item_emb.transpose(0, 1))
-                    _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True)
-                    neg_idx = torch.zeros_like(ui_score, dtype=torch.float32)
-                    neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], 1.0)
-                    neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.float)
-                    _, neg_idx = torch.sort(torch.mul(torch.randn_like(neg_idx), neg_idx), dim=1, descending=True, stable=True)
-                    neg_idx = neg_idx[:,0]
-					
+                    # _, indices = torch.sort(ui_score, dim=1, descending=True, stable=True) # for stable sampling - 1-1
+                    _, indices = torch.topk(ui_score, int(self.neg_factor*self.data.item_num*1), dim=1) # for faster sampling - 1-2
+                    neg_idx = torch.zeros_like(ui_score, dtype=torch.bool)
+                    # neg_idx.scatter_(1, indices[:,:int(self.neg_factor*self.data.item_num)], True) # for stable sampling - 2-1
+                    neg_idx.scatter_(1, indices, 1.0) # for faster sampling - 2-2
+                    neg_idx = torch.logical_and(neg_idx, self.unobserved_adj[user_idx]).to(torch.half)
+                    neg_idx = torch.multinomial(neg_idx+1e-4, 1).squeeze(1)
+                    
 					# Backward and optimize
+                    #user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[random_neg_idx] # random sampling
                     user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
                     batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
                     optimizer.zero_grad()
@@ -78,42 +104,46 @@ class ForwardRec(GraphRecommender):
                     if n%100 == 0 and n > 0:
                         print('layer:', self.current_layer, 'training:', epoch + 1, 'batch', n, 'batch_loss:', batch_loss.item())
                         
-				# Validation
+				   # Validation
                 with torch.no_grad():
                     print("\nLayer %d:"%self.current_layer)
                     self.user_emb, self.item_emb = model()
                     measure, early_stopping = self.fast_evaluation(epoch)
                     record_list.append(measure)
                     
-                    user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
-                    batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
-                    loss_list.append(batch_loss.item())
+                    # user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
+                    # batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
+                    # loss_list.append(batch_loss.item())
 				
-				# Checking in case of huge gap after normalization
-                if flag:
-                    if len(last_performance)==0:
-                        last_performance = measure
-                    else:
-                        count = 0
-                        for i in range(4):
-                            if float(last_performance[i].split(':')[1]) > float(measure[i].split(':')[1]):
-                                count+=1
-                            else:
-                                count-=1
-                        if count>0:
-                            self.bestPerformance[0] = epoch+1
-                            self.bestPerformance[1]['Hit Ratio'] = float(measure[0].split(':')[1])
-                            self.bestPerformance[1]['Precision'] = float(measure[1].split(':')[1])
-                            self.bestPerformance[1]['Recall'] = float(measure[2].split(':')[1])
-                            self.bestPerformance[1]['NDCG'] = float(measure[3].split(':')[1])
-                            last_performance = measure
-                        else:
-                            flag = False
-					
+				   # Checking in case of huge gap after normalization for analysis
+                # print(flag)
+                # if flag:
+                #     if len(last_performance)==0:
+                #         last_performance = measure
+                #     else:
+                #         count = 0
+                #         for i in range(4):
+                #             if float(last_performance[i].split(':')[1]) > float(measure[i].split(':')[1]):
+                #                 count+=1
+                #             else:
+                #                 count-=1
+                #         if count>0:
+                #             self.bestPerformance[0] = epoch+1
+                #             self.bestPerformance[1]['Hit Ratio'] = float(measure[0].split(':')[1])
+                #             self.bestPerformance[1]['Precision'] = float(measure[1].split(':')[1])
+                #             self.bestPerformance[1]['Recall'] = float(measure[2].split(':')[1])
+                #             self.bestPerformance[1]['NDCG'] = float(measure[3].split(':')[1])
+                #             last_performance = measure
+                #         else:
+                #             flag = False
+                #best_epoch = self.bestPerformance[0]
+                
                 epoch += 1
-                best_epoch = self.bestPerformance[0]
+                e = time.time()
+                print("Time used: %f s"%(e-s))
             all_performances.append(self.bestPerformance[1])
         self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
+        
         # record performance
         with open('performance.txt','a') as fp:
             for n, performance in enumerate(all_performances):

@@ -3,14 +3,16 @@ from util.conf import ModelConf
 
 if __name__ == '__main__':
     # Register your model here
-    graph_baselines = ['g1. LightGCN','g2. DirectAU','g3. MF','g4.ForwardRec', 'g5. LTGNN', 'g6. APPNP']
-    graph_signal = ['gs1. LGCN', 'gs2. PGSP']
+    graph_baselines = ['g1. MF','g2. APPNP','g3. DirectAU','g4.LightGCN', 'g5. LTGNN', 'g6. ForwardRec', 'g7. CoRec']
+    graph_signal = ['gs1. LGCN', 'gs2. PGSP', 'gs3. JGCF', 'gs4. SGFCF']
     hypergraph = ['hg1. DHCF', 'hg2. HCCF']
     social_recommendations = ['sr1. DiffNet', 'sr2. DiffNet++', 'sr3. MHCN', 'sr4. SEPT']
     negative_sampling = ['ns1. MixGCF', 'ns2. DENS']
-    ssl_graph_models = ['sg1. SGL', 'sg2. SimGCL','sg3. BUIR', 'sg4. SelfCF', 'sg5. SSL4Rec', 'sg6. XSimGCL', 'sg7. NCL']
+    ssl_graph_models = ['sg1. SGL', 'sg2. BUIR','sg3. SSL4Rec', 'sg4. SimGCL', 'sg5. NCL', 'sg6. AdaGCL', 'sg7.SelfCF ', 'sg8. LightGCL', 'sg9.  XSimGCL']
     sequential_baselines= ['s1. SASRec', 's2. FBABRF']
     ssl_sequential_models = ['ss1. CL4SRec','ss2. DuoRec','ss3. BERT4Rec']
+    diffusion_models = ['d1. DiffRec', 'd2. L-DiffRec', 'd3. DiffGraph']
+    test_models = ['1. test1']
 
     print('=' * 80)
     print('   SELFRec: A library for self-supervised recommendation.   ')
@@ -39,19 +41,27 @@ if __name__ == '__main__':
     print('-' * 100)
     print('Self-Supervised Sequential Models:')
     print('   '.join(ssl_sequential_models))
-    print('=' * 80)
+    print('-' * 100)
+    print('Diffusion-Based Models:')
+    print('   '.join(diffusion_models))
+    print('=' * 100)
+    print('Test template:')
+    print('   '.join(test_models))
+    print('-' * 80)
     model = input('Please enter the model you want to run:').lower()
     import time
 
     s = time.time()
-    code2model = {'g1':'LightGCN', 'g2':'DirectAU', 'g3':'MF', 'g4':'ForwardRec', 'g5':'LTGNN', 'g6':'APPNP',
-                  'gs1':'LGCN', 'gs2':'PGSP',
+    code2model = {'g1':'MF', 'g2':'APPNP', 'g3':'DirectAU', 'g4':'LightGCN', 'g5':'LTGNN', 'g6':'ForwardRec', 'g7':'CoRec',
+                  'gs1':'LGCN', 'gs2':'PGSP', 'gs3':'JGCF', 'gs4': 'SGFCF',
                   'hg1':'DHCF', 'hg2':'HCCF',
                   'sr1':'DiffNet', 'sr2':'DiffNetPlus', 'sr3':'MHCN', 'sr4':'SEPT',
                   'ns1':'MixGCF', 'ns2':'DENS',
-                  'sg1':'SGL', 'sg2':'SimGCL', 'sg3':'BUIR', 'sg4':'SelfCF', 'sg5':'SSL4Rec', 'sg6':'XSimGCL','sg7':'NCL', 
+                  'sg1':'SGL', 'sg2':'BUIR', 'sg3':'SSL4Rec', 'sg4':'SimGCL', 'sg5':'NCL', 'sg6':'AdaGCL', 'sg7':'SelfCF', 'sg8':'LightGCL', 'sg9':'XSimGCL',
                   's1':'SASRec', 's2':'FBABRF',
-                  'ss1':'CL4SRec', 'ss2':'DuoRec', 'ss3':'BERT4Rec'}
+                  'ss1':'CL4SRec', 'ss2':'DuoRec', 'ss3':'BERT4Rec',
+                  'd1': 'DiffRec', 'd2': 'L_DiffRec', 'd3': 'DiffGraph',
+                  '1': 'test'}
     try:
         conf = ModelConf('./conf/' + code2model[model] + '.conf')
     except:

@@ -82,13 +82,13 @@ class PGSP_Encoder(nn.Module):
         L_norm = I - A_norm
 
         try:
-            with open('dataset/yelp2018/PGSP', 'rb') as fp: # choose the dataset folder
+            with open('dataset/gowalla/PGSP', 'rb') as fp: # choose the dataset folder
                 eigen = pickle.load(fp)
             val = eigen[0]
             vec = eigen[1]
         except:
             val, vec = sp.sparse.linalg.eigsh(L_norm, k=self.frequency, which='SA', tol=0)
-            with open('PGSP', 'wb') as fp:
+            with open('dataset/gowalla/PGSP', 'wb') as fp:
                 pickle.dump([val, vec], fp)
 
         R_b = sp.sparse.hstack([Cu0, R])

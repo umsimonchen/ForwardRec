@@ -9,6 +9,7 @@ import os
 import numpy as np
 import random
 # paper: APPNP: PREDICT THEN PROPAGATE: GRAPH NEURAL NETWORKS MEET PERSONALIZED PAGERANK. ICLR'19
+# https://github.com/benedekrozemberczki/APPNP
 
 seed = 0
 np.random.seed(seed)

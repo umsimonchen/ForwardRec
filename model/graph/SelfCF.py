@@ -8,7 +8,7 @@ from model.graph.LightGCN import LGCN_Encoder
 
 
 # SELFCF: A Simple Framework for Self-supervised Collaborative Filtering
-
+# https://github.com/enoche/SelfCF
 # Note: SelfCF has three variants and We implement SelfCF-he because it is reported as the best in most cases. The backbone is LightGCN.
 
 class SelfCF(GraphRecommender):
