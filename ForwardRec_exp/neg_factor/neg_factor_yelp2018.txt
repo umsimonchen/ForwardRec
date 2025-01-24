@@ -1,0 +1,32 @@
+When neg_factor=1.000000:Layer 0:{'Hit Ratio': 0.05658, 'Precision': 0.02896, 'Recall': 0.06423, 'NDCG': 0.05289}
+Layer 1:{'Hit Ratio': 0.05899, 'Precision': 0.03019, 'Recall': 0.06697, 'NDCG': 0.05462}
+When neg_factor=0.500000:Layer 0:{'Hit Ratio': 0.05684, 'Precision': 0.02909, 'Recall': 0.06466, 'NDCG': 0.05289}
+Layer 1:{'Hit Ratio': 0.05896, 'Precision': 0.03018, 'Recall': 0.06702, 'NDCG': 0.05469}
+When neg_factor=0.200000:Layer 0:{'Hit Ratio': 0.05802, 'Precision': 0.02969, 'Recall': 0.06599, 'NDCG': 0.05393}
+Layer 1:{'Hit Ratio': 0.05985, 'Precision': 0.03063, 'Recall': 0.06784, 'NDCG': 0.05562}
+When neg_factor=0.100000:Layer 0:{'Hit Ratio': 0.05984, 'Precision': 0.03062, 'Recall': 0.0678, 'NDCG': 0.05543}
+Layer 1:{'Hit Ratio': 0.0612, 'Precision': 0.03132, 'Recall': 0.06927, 'NDCG': 0.05657}
+When neg_factor=0.050000:Layer 0:{'Hit Ratio': 0.06151, 'Precision': 0.03148, 'Recall': 0.06977, 'NDCG': 0.05657}
+Layer 1:{'Hit Ratio': 0.06238, 'Precision': 0.03193, 'Recall': 0.0707, 'NDCG': 0.05761}
+When neg_factor=0.020000:Layer 0:{'Hit Ratio': 0.06175, 'Precision': 0.0316, 'Recall': 0.0701, 'NDCG': 0.05669}
+Layer 1:{'Hit Ratio': 0.0628, 'Precision': 0.03214, 'Recall': 0.07127, 'NDCG': 0.05789}
+When neg_factor=0.010000:Layer 0:{'Hit Ratio': 0.05888, 'Precision': 0.03014, 'Recall': 0.06754, 'NDCG': 0.05398}
+Layer 1:{'Hit Ratio': 0.05992, 'Precision': 0.03067, 'Recall': 0.06882, 'NDCG': 0.05544}
+When neg_factor=0.005000:Layer 0:{'Hit Ratio': 0.05219, 'Precision': 0.02671, 'Recall': 0.06104, 'NDCG': 0.04844}
+Layer 1:{'Hit Ratio': 0.05693, 'Precision': 0.02914, 'Recall': 0.065, 'NDCG': 0.05235}
+When neg_factor=0.002000:Layer 0:{'Hit Ratio': 0.04241, 'Precision': 0.0217, 'Recall': 0.0511, 'NDCG': 0.04058}
+Layer 1:{'Hit Ratio': 0.04935, 'Precision': 0.02526, 'Recall': 0.05797, 'NDCG': 0.04677}
+When neg_factor=0.001000:Layer 0:{'Hit Ratio': 0.03538, 'Precision': 0.01811, 'Recall': 0.04341, 'NDCG': 0.03468}
+Layer 1:{'Hit Ratio': 0.04239, 'Precision': 0.0217, 'Recall': 0.05072, 'NDCG': 0.04026}
+When dataset=yelp2018, neg_factor=0.030000:At layer 0{'Hit Ratio': 0.06192, 'Precision': 0.03169, 'Recall': 0.07021, 'NDCG': 0.05703}
+At layer 1{'Hit Ratio': 0.06267, 'Precision': 0.03207, 'Recall': 0.07119, 'NDCG': 0.05795}
+When dataset=yelp2018, neg_factor=0.040000:At layer 0{'Hit Ratio': 0.06186, 'Precision': 0.03166, 'Recall': 0.07027, 'NDCG': 0.05698}
+At layer 1{'Hit Ratio': 0.0625, 'Precision': 0.03199, 'Recall': 0.07076, 'NDCG': 0.05768}
+When dataset=yelp2018, neg_factor=0.060000:At layer 0{'Hit Ratio': 0.0614, 'Precision': 0.03143, 'Recall': 0.06986, 'NDCG': 0.05668}
+At layer 1{'Hit Ratio': 0.06224, 'Precision': 0.03185, 'Recall': 0.07057, 'NDCG': 0.05755}
+When dataset=yelp2018, neg_factor=0.070000:At layer 0{'Hit Ratio': 0.06073, 'Precision': 0.03108, 'Recall': 0.06917, 'NDCG': 0.0565}
+At layer 1{'Hit Ratio': 0.06202, 'Precision': 0.03174, 'Recall': 0.07023, 'NDCG': 0.05733}
+When dataset=yelp2018, neg_factor=0.080000:At layer 0{'Hit Ratio': 0.06055, 'Precision': 0.03099, 'Recall': 0.0687, 'NDCG': 0.05592}
+At layer 1{'Hit Ratio': 0.0616, 'Precision': 0.03153, 'Recall': 0.0698, 'NDCG': 0.0569}
+When dataset=yelp2018, neg_factor=0.090000:At layer 0{'Hit Ratio': 0.06041, 'Precision': 0.03092, 'Recall': 0.06869, 'NDCG': 0.05588}
+At layer 1{'Hit Ratio': 0.06173, 'Precision': 0.03159, 'Recall': 0.07011, 'NDCG': 0.05704}

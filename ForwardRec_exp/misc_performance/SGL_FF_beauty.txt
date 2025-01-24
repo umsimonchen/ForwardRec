@@ -1,0 +1,144 @@
+When lamda=0.005000,eps=0.000000:At layer 0{'Hit Ratio': 0.14703, 'Precision': 0.01664, 'Recall': 0.13964, 'NDCG': 0.07877}
+At layer 1{'Hit Ratio': 0.14915, 'Precision': 0.01688, 'Recall': 0.14238, 'NDCG': 0.07986}
+At layer 2{'Hit Ratio': 0.14938, 'Precision': 0.0169, 'Recall': 0.14321, 'NDCG': 0.07911}
+At layer 3{'Hit Ratio': 0.1498, 'Precision': 0.01695, 'Recall': 0.14407, 'NDCG': 0.08001}
+When lamda=0.005000,eps=0.100000:At layer 0{'Hit Ratio': 0.14849, 'Precision': 0.0168, 'Recall': 0.14163, 'NDCG': 0.07939}
+At layer 1{'Hit Ratio': 0.15006, 'Precision': 0.01698, 'Recall': 0.14351, 'NDCG': 0.08026}
+At layer 2{'Hit Ratio': 0.15038, 'Precision': 0.01702, 'Recall': 0.14415, 'NDCG': 0.07988}
+At layer 3{'Hit Ratio': 0.15099, 'Precision': 0.01708, 'Recall': 0.14508, 'NDCG': 0.08048}
+When lamda=0.005000,eps=0.200000:At layer 0{'Hit Ratio': 0.14718, 'Precision': 0.01665, 'Recall': 0.1403, 'NDCG': 0.0785}
+At layer 1{'Hit Ratio': 0.14915, 'Precision': 0.01688, 'Recall': 0.14253, 'NDCG': 0.07908}
+At layer 2{'Hit Ratio': 0.15016, 'Precision': 0.01699, 'Recall': 0.14408, 'NDCG': 0.0796}
+At layer 3{'Hit Ratio': 0.15076, 'Precision': 0.01706, 'Recall': 0.14365, 'NDCG': 0.08008}
+When lamda=0.005000,eps=0.300000:At layer 0{'Hit Ratio': 0.14786, 'Precision': 0.01673, 'Recall': 0.14188, 'NDCG': 0.07883}
+At layer 1{'Hit Ratio': 0.14923, 'Precision': 0.01688, 'Recall': 0.14389, 'NDCG': 0.07976}
+At layer 2{'Hit Ratio': 0.15018, 'Precision': 0.01699, 'Recall': 0.14436, 'NDCG': 0.07978}
+At layer 3{'Hit Ratio': 0.15069, 'Precision': 0.01705, 'Recall': 0.14449, 'NDCG': 0.08061}
+When lamda=0.005000,eps=0.400000:At layer 0{'Hit Ratio': 0.14681, 'Precision': 0.01661, 'Recall': 0.14034, 'NDCG': 0.07777}
+At layer 1{'Hit Ratio': 0.1486, 'Precision': 0.01681, 'Recall': 0.14207, 'NDCG': 0.07948}
+At layer 2{'Hit Ratio': 0.15033, 'Precision': 0.01701, 'Recall': 0.14422, 'NDCG': 0.07986}
+At layer 3{'Hit Ratio': 0.15043, 'Precision': 0.01702, 'Recall': 0.14419, 'NDCG': 0.08055}
+When lamda=0.005000,eps=0.500000:At layer 0{'Hit Ratio': 0.14608, 'Precision': 0.01653, 'Recall': 0.13937, 'NDCG': 0.07815}
+At layer 1{'Hit Ratio': 0.14844, 'Precision': 0.0168, 'Recall': 0.14223, 'NDCG': 0.07903}
+At layer 2{'Hit Ratio': 0.14991, 'Precision': 0.01696, 'Recall': 0.14399, 'NDCG': 0.08006}
+At layer 3{'Hit Ratio': 0.15011, 'Precision': 0.01698, 'Recall': 0.14362, 'NDCG': 0.0801}
+When lamda=0.010000,eps=0.000000:At layer 0{'Hit Ratio': 0.14857, 'Precision': 0.01681, 'Recall': 0.14213, 'NDCG': 0.0795}
+At layer 1{'Hit Ratio': 0.15099, 'Precision': 0.01708, 'Recall': 0.14337, 'NDCG': 0.08082}
+At layer 2{'Hit Ratio': 0.15101, 'Precision': 0.01709, 'Recall': 0.14417, 'NDCG': 0.08071}
+At layer 3{'Hit Ratio': 0.15137, 'Precision': 0.01713, 'Recall': 0.14464, 'NDCG': 0.08109}
+When lamda=0.010000,eps=0.100000:At layer 0{'Hit Ratio': 0.14986, 'Precision': 0.01696, 'Recall': 0.1428, 'NDCG': 0.0805}
+At layer 1{'Hit Ratio': 0.15114, 'Precision': 0.0171, 'Recall': 0.14412, 'NDCG': 0.0812}
+At layer 2{'Hit Ratio': 0.15225, 'Precision': 0.01723, 'Recall': 0.14537, 'NDCG': 0.0815}
+At layer 3{'Hit Ratio': 0.15293, 'Precision': 0.0173, 'Recall': 0.14555, 'NDCG': 0.08155}
+When lamda=0.010000,eps=0.200000:At layer 0{'Hit Ratio': 0.15089, 'Precision': 0.01707, 'Recall': 0.14377, 'NDCG': 0.08}
+At layer 1{'Hit Ratio': 0.15137, 'Precision': 0.01713, 'Recall': 0.14434, 'NDCG': 0.08015}
+At layer 2{'Hit Ratio': 0.15192, 'Precision': 0.01719, 'Recall': 0.14486, 'NDCG': 0.08088}
+At layer 3{'Hit Ratio': 0.15207, 'Precision': 0.01721, 'Recall': 0.14528, 'NDCG': 0.08117}
+When lamda=0.010000,eps=0.300000:At layer 0{'Hit Ratio': 0.15023, 'Precision': 0.017, 'Recall': 0.14368, 'NDCG': 0.08085}
+At layer 1{'Hit Ratio': 0.1521, 'Precision': 0.01721, 'Recall': 0.14612, 'NDCG': 0.08131}
+At layer 2{'Hit Ratio': 0.15139, 'Precision': 0.01713, 'Recall': 0.14504, 'NDCG': 0.08109}
+At layer 3{'Hit Ratio': 0.15164, 'Precision': 0.01716, 'Recall': 0.14502, 'NDCG': 0.08164}
+When lamda=0.010000,eps=0.400000:At layer 0{'Hit Ratio': 0.15031, 'Precision': 0.01701, 'Recall': 0.14425, 'NDCG': 0.08025}
+At layer 1{'Hit Ratio': 0.15117, 'Precision': 0.0171, 'Recall': 0.14485, 'NDCG': 0.08071}
+At layer 2{'Hit Ratio': 0.1522, 'Precision': 0.01722, 'Recall': 0.14573, 'NDCG': 0.08067}
+At layer 3{'Hit Ratio': 0.15195, 'Precision': 0.01719, 'Recall': 0.14516, 'NDCG': 0.081}
+When lamda=0.010000,eps=0.500000:At layer 0{'Hit Ratio': 0.14933, 'Precision': 0.0169, 'Recall': 0.14329, 'NDCG': 0.07977}
+At layer 1{'Hit Ratio': 0.15079, 'Precision': 0.01706, 'Recall': 0.14448, 'NDCG': 0.08019}
+At layer 2{'Hit Ratio': 0.15132, 'Precision': 0.01712, 'Recall': 0.14469, 'NDCG': 0.08098}
+At layer 3{'Hit Ratio': 0.15185, 'Precision': 0.01718, 'Recall': 0.14485, 'NDCG': 0.08063}
+When lamda=0.050000,eps=0.000000:At layer 0{'Hit Ratio': 0.15197, 'Precision': 0.0172, 'Recall': 0.14478, 'NDCG': 0.08153}
+At layer 1{'Hit Ratio': 0.15462, 'Precision': 0.01749, 'Recall': 0.14656, 'NDCG': 0.08213}
+At layer 2{'Hit Ratio': 0.15555, 'Precision': 0.0176, 'Recall': 0.14713, 'NDCG': 0.08275}
+At layer 3{'Hit Ratio': 0.1559, 'Precision': 0.01764, 'Recall': 0.1478, 'NDCG': 0.08366}
+When lamda=0.050000,eps=0.100000:At layer 0{'Hit Ratio': 0.15439, 'Precision': 0.01747, 'Recall': 0.14668, 'NDCG': 0.08266}
+At layer 1{'Hit Ratio': 0.15474, 'Precision': 0.01751, 'Recall': 0.14694, 'NDCG': 0.0825}
+At layer 2{'Hit Ratio': 0.15542, 'Precision': 0.01759, 'Recall': 0.14729, 'NDCG': 0.08349}
+At layer 3{'Hit Ratio': 0.15626, 'Precision': 0.01768, 'Recall': 0.14808, 'NDCG': 0.08346}
+When lamda=0.050000,eps=0.200000:At layer 0{'Hit Ratio': 0.15704, 'Precision': 0.01777, 'Recall': 0.14851, 'NDCG': 0.08361}
+At layer 1{'Hit Ratio': 0.15656, 'Precision': 0.01771, 'Recall': 0.14792, 'NDCG': 0.08322}
+At layer 2{'Hit Ratio': 0.15764, 'Precision': 0.01784, 'Recall': 0.14902, 'NDCG': 0.0834}
+At layer 3{'Hit Ratio': 0.15704, 'Precision': 0.01777, 'Recall': 0.14894, 'NDCG': 0.08397}
+When lamda=0.050000,eps=0.300000:At layer 0{'Hit Ratio': 0.15701, 'Precision': 0.01777, 'Recall': 0.15026, 'NDCG': 0.08367}
+At layer 1{'Hit Ratio': 0.15734, 'Precision': 0.0178, 'Recall': 0.14961, 'NDCG': 0.08386}
+At layer 2{'Hit Ratio': 0.15847, 'Precision': 0.01793, 'Recall': 0.15046, 'NDCG': 0.08372}
+At layer 3{'Hit Ratio': 0.15835, 'Precision': 0.01792, 'Recall': 0.151, 'NDCG': 0.0841}
+When lamda=0.050000,eps=0.400000:At layer 0{'Hit Ratio': 0.15729, 'Precision': 0.0178, 'Recall': 0.14909, 'NDCG': 0.08338}
+At layer 1{'Hit Ratio': 0.15646, 'Precision': 0.0177, 'Recall': 0.14791, 'NDCG': 0.08274}
+At layer 2{'Hit Ratio': 0.15736, 'Precision': 0.01781, 'Recall': 0.14911, 'NDCG': 0.08243}
+At layer 3{'Hit Ratio': 0.15668, 'Precision': 0.01773, 'Recall': 0.14862, 'NDCG': 0.08313}
+When lamda=0.050000,eps=0.500000:At layer 0{'Hit Ratio': 0.15676, 'Precision': 0.01774, 'Recall': 0.14993, 'NDCG': 0.08355}
+At layer 1{'Hit Ratio': 0.15641, 'Precision': 0.0177, 'Recall': 0.14884, 'NDCG': 0.08298}
+At layer 2{'Hit Ratio': 0.1556, 'Precision': 0.01761, 'Recall': 0.14832, 'NDCG': 0.08373}
+At layer 3{'Hit Ratio': 0.15663, 'Precision': 0.01772, 'Recall': 0.14851, 'NDCG': 0.08337}
+When lamda=0.100000,eps=0.000000:At layer 0{'Hit Ratio': 0.15197, 'Precision': 0.0172, 'Recall': 0.14366, 'NDCG': 0.08065}
+At layer 1{'Hit Ratio': 0.15502, 'Precision': 0.01754, 'Recall': 0.14549, 'NDCG': 0.08274}
+At layer 2{'Hit Ratio': 0.15638, 'Precision': 0.01769, 'Recall': 0.14691, 'NDCG': 0.08314}
+At layer 3{'Hit Ratio': 0.15684, 'Precision': 0.01775, 'Recall': 0.14729, 'NDCG': 0.08317}
+When lamda=0.100000,eps=0.100000:At layer 0{'Hit Ratio': 0.15565, 'Precision': 0.01761, 'Recall': 0.14726, 'NDCG': 0.08277}
+At layer 1{'Hit Ratio': 0.15684, 'Precision': 0.01775, 'Recall': 0.14849, 'NDCG': 0.08368}
+At layer 2{'Hit Ratio': 0.15666, 'Precision': 0.01773, 'Recall': 0.14827, 'NDCG': 0.08392}
+At layer 3{'Hit Ratio': 0.15706, 'Precision': 0.01777, 'Recall': 0.14828, 'NDCG': 0.0837}
+When lamda=0.100000,eps=0.200000:At layer 0{'Hit Ratio': 0.15782, 'Precision': 0.01786, 'Recall': 0.14877, 'NDCG': 0.08376}
+At layer 1{'Hit Ratio': 0.15807, 'Precision': 0.01789, 'Recall': 0.1494, 'NDCG': 0.08429}
+At layer 2{'Hit Ratio': 0.15825, 'Precision': 0.01791, 'Recall': 0.14966, 'NDCG': 0.08436}
+At layer 3{'Hit Ratio': 0.15958, 'Precision': 0.01806, 'Recall': 0.15096, 'NDCG': 0.08474}
+When lamda=0.100000,eps=0.300000:At layer 0{'Hit Ratio': 0.15845, 'Precision': 0.01793, 'Recall': 0.15125, 'NDCG': 0.08459}
+At layer 1{'Hit Ratio': 0.15946, 'Precision': 0.01804, 'Recall': 0.15134, 'NDCG': 0.08493}
+At layer 2{'Hit Ratio': 0.15966, 'Precision': 0.01806, 'Recall': 0.15124, 'NDCG': 0.0846}
+At layer 3{'Hit Ratio': 0.1588, 'Precision': 0.01797, 'Recall': 0.15019, 'NDCG': 0.08456}
+When lamda=0.100000,eps=0.400000:At layer 0{'Hit Ratio': 0.15792, 'Precision': 0.01787, 'Recall': 0.1492, 'NDCG': 0.08376}
+At layer 1{'Hit Ratio': 0.15852, 'Precision': 0.01794, 'Recall': 0.14963, 'NDCG': 0.08374}
+At layer 2{'Hit Ratio': 0.1593, 'Precision': 0.01802, 'Recall': 0.15027, 'NDCG': 0.08373}
+At layer 3{'Hit Ratio': 0.15845, 'Precision': 0.01793, 'Recall': 0.14976, 'NDCG': 0.08379}
+When lamda=0.100000,eps=0.500000:At layer 0{'Hit Ratio': 0.15777, 'Precision': 0.01785, 'Recall': 0.15009, 'NDCG': 0.08421}
+At layer 1{'Hit Ratio': 0.15797, 'Precision': 0.01787, 'Recall': 0.14978, 'NDCG': 0.0841}
+At layer 2{'Hit Ratio': 0.15792, 'Precision': 0.01787, 'Recall': 0.14968, 'NDCG': 0.08443}
+At layer 3{'Hit Ratio': 0.15825, 'Precision': 0.01791, 'Recall': 0.15, 'NDCG': 0.08452}
+When lamda=0.500000,eps=0.000000:At layer 0{'Hit Ratio': 0.13464, 'Precision': 0.01523, 'Recall': 0.1267, 'NDCG': 0.0723}
+At layer 1{'Hit Ratio': 0.14925, 'Precision': 0.01689, 'Recall': 0.13794, 'NDCG': 0.07847}
+At layer 2{'Hit Ratio': 0.15041, 'Precision': 0.01702, 'Recall': 0.13851, 'NDCG': 0.07936}
+At layer 3{'Hit Ratio': 0.15127, 'Precision': 0.01712, 'Recall': 0.14026, 'NDCG': 0.08007}
+When lamda=0.500000,eps=0.100000:At layer 0{'Hit Ratio': 0.15122, 'Precision': 0.01711, 'Recall': 0.14318, 'NDCG': 0.08136}
+At layer 1{'Hit Ratio': 0.15615, 'Precision': 0.01767, 'Recall': 0.14661, 'NDCG': 0.08335}
+At layer 2{'Hit Ratio': 0.15626, 'Precision': 0.01768, 'Recall': 0.14643, 'NDCG': 0.08355}
+At layer 3{'Hit Ratio': 0.15653, 'Precision': 0.01771, 'Recall': 0.14731, 'NDCG': 0.08373}
+When lamda=0.500000,eps=0.200000:At layer 0{'Hit Ratio': 0.15318, 'Precision': 0.01733, 'Recall': 0.14438, 'NDCG': 0.08151}
+At layer 1{'Hit Ratio': 0.15686, 'Precision': 0.01775, 'Recall': 0.14781, 'NDCG': 0.08344}
+At layer 2{'Hit Ratio': 0.15699, 'Precision': 0.01776, 'Recall': 0.14799, 'NDCG': 0.08335}
+At layer 3{'Hit Ratio': 0.15747, 'Precision': 0.01782, 'Recall': 0.14877, 'NDCG': 0.08378}
+When lamda=0.500000,eps=0.300000:At layer 0{'Hit Ratio': 0.15618, 'Precision': 0.01767, 'Recall': 0.14682, 'NDCG': 0.08312}
+At layer 1{'Hit Ratio': 0.15913, 'Precision': 0.018, 'Recall': 0.14966, 'NDCG': 0.08428}
+At layer 2{'Hit Ratio': 0.15935, 'Precision': 0.01803, 'Recall': 0.14966, 'NDCG': 0.08436}
+At layer 3{'Hit Ratio': 0.1588, 'Precision': 0.01797, 'Recall': 0.14943, 'NDCG': 0.08447}
+When lamda=0.500000,eps=0.400000:At layer 0{'Hit Ratio': 0.15638, 'Precision': 0.01769, 'Recall': 0.14832, 'NDCG': 0.08364}
+At layer 1{'Hit Ratio': 0.15825, 'Precision': 0.01791, 'Recall': 0.14989, 'NDCG': 0.08415}
+At layer 2{'Hit Ratio': 0.15827, 'Precision': 0.01791, 'Recall': 0.15011, 'NDCG': 0.08384}
+At layer 3{'Hit Ratio': 0.15852, 'Precision': 0.01794, 'Recall': 0.1499, 'NDCG': 0.08475}
+When lamda=0.500000,eps=0.500000:At layer 0{'Hit Ratio': 0.15711, 'Precision': 0.01778, 'Recall': 0.14921, 'NDCG': 0.08402}
+At layer 1{'Hit Ratio': 0.15847, 'Precision': 0.01793, 'Recall': 0.15123, 'NDCG': 0.0845}
+At layer 2{'Hit Ratio': 0.15809, 'Precision': 0.01789, 'Recall': 0.1495, 'NDCG': 0.08443}
+At layer 3{'Hit Ratio': 0.15815, 'Precision': 0.01789, 'Recall': 0.1499, 'NDCG': 0.08452}
+When lamda=1.000000,eps=0.000000:At layer 0{'Hit Ratio': 0.1149, 'Precision': 0.013, 'Recall': 0.10863, 'NDCG': 0.06182}
+At layer 1{'Hit Ratio': 0.13781, 'Precision': 0.01559, 'Recall': 0.12691, 'NDCG': 0.07268}
+At layer 2{'Hit Ratio': 0.13978, 'Precision': 0.01582, 'Recall': 0.12891, 'NDCG': 0.07378}
+At layer 3{'Hit Ratio': 0.1403, 'Precision': 0.01588, 'Recall': 0.13004, 'NDCG': 0.07425}
+When lamda=1.000000,eps=0.100000:At layer 0{'Hit Ratio': 0.14257, 'Precision': 0.01613, 'Recall': 0.13515, 'NDCG': 0.07725}
+At layer 1{'Hit Ratio': 0.15003, 'Precision': 0.01698, 'Recall': 0.14069, 'NDCG': 0.08104}
+At layer 2{'Hit Ratio': 0.15051, 'Precision': 0.01703, 'Recall': 0.14092, 'NDCG': 0.08095}
+At layer 3{'Hit Ratio': 0.15109, 'Precision': 0.0171, 'Recall': 0.14117, 'NDCG': 0.08098}
+When lamda=1.000000,eps=0.200000:At layer 0{'Hit Ratio': 0.14726, 'Precision': 0.01666, 'Recall': 0.13977, 'NDCG': 0.07864}
+At layer 1{'Hit Ratio': 0.15303, 'Precision': 0.01731, 'Recall': 0.14395, 'NDCG': 0.08193}
+At layer 2{'Hit Ratio': 0.15205, 'Precision': 0.0172, 'Recall': 0.14287, 'NDCG': 0.08145}
+At layer 3{'Hit Ratio': 0.15353, 'Precision': 0.01737, 'Recall': 0.14467, 'NDCG': 0.0822}
+When lamda=1.000000,eps=0.300000:At layer 0{'Hit Ratio': 0.15036, 'Precision': 0.01701, 'Recall': 0.14111, 'NDCG': 0.08017}
+At layer 1{'Hit Ratio': 0.15449, 'Precision': 0.01748, 'Recall': 0.14535, 'NDCG': 0.08279}
+At layer 2{'Hit Ratio': 0.15341, 'Precision': 0.01736, 'Recall': 0.14403, 'NDCG': 0.0827}
+At layer 3{'Hit Ratio': 0.15424, 'Precision': 0.01745, 'Recall': 0.14547, 'NDCG': 0.0831}
+When lamda=1.000000,eps=0.400000:At layer 0{'Hit Ratio': 0.15021, 'Precision': 0.017, 'Recall': 0.14215, 'NDCG': 0.08037}
+At layer 1{'Hit Ratio': 0.15426, 'Precision': 0.01745, 'Recall': 0.14602, 'NDCG': 0.08283}
+At layer 2{'Hit Ratio': 0.15505, 'Precision': 0.01754, 'Recall': 0.147, 'NDCG': 0.08311}
+At layer 3{'Hit Ratio': 0.15414, 'Precision': 0.01744, 'Recall': 0.14623, 'NDCG': 0.08256}
+When lamda=1.000000,eps=0.500000:At layer 0{'Hit Ratio': 0.15192, 'Precision': 0.01719, 'Recall': 0.14404, 'NDCG': 0.08027}
+At layer 1{'Hit Ratio': 0.15482, 'Precision': 0.01752, 'Recall': 0.14648, 'NDCG': 0.08255}
+At layer 2{'Hit Ratio': 0.1552, 'Precision': 0.01756, 'Recall': 0.14705, 'NDCG': 0.08287}
+At layer 3{'Hit Ratio': 0.1553, 'Precision': 0.01757, 'Recall': 0.14686, 'NDCG': 0.08276}

@@ -1,0 +1,44 @@
+When layer=1:Layer 0:{'Hit Ratio': 0.31089, 'Precision': 0.13489, 'Recall': 0.30274, 'NDCG': 0.2913}
+Layer 1:{'Hit Ratio': 0.31089, 'Precision': 0.13489, 'Recall': 0.30274, 'NDCG': 0.2913}
+When layer=2:Layer 0:{'Hit Ratio': 0.31089, 'Precision': 0.13489, 'Recall': 0.30274, 'NDCG': 0.2913}
+Layer 1:{'Hit Ratio': 0.29961, 'Precision': 0.13, 'Recall': 0.29101, 'NDCG': 0.28057}
+Layer 2:{'Hit Ratio': 0.3112, 'Precision': 0.13503, 'Recall': 0.30302, 'NDCG': 0.29125}
+When layer=3:Layer 0:{'Hit Ratio': 0.31089, 'Precision': 0.13489, 'Recall': 0.30274, 'NDCG': 0.2913}
+Layer 1:{'Hit Ratio': 0.29955, 'Precision': 0.12997, 'Recall': 0.29029, 'NDCG': 0.27862}
+Layer 2:{'Hit Ratio': 0.29564, 'Precision': 0.12828, 'Recall': 0.28589, 'NDCG': 0.2752}
+Layer 3:{'Hit Ratio': 0.30958, 'Precision': 0.13433, 'Recall': 0.30066, 'NDCG': 0.28935}
+When layer=4:Layer 0:{'Hit Ratio': 0.31089, 'Precision': 0.13489, 'Recall': 0.30274, 'NDCG': 0.2913}
+Layer 1:{'Hit Ratio': 0.29967, 'Precision': 0.13003, 'Recall': 0.29052, 'NDCG': 0.28066}
+Layer 2:{'Hit Ratio': 0.29447, 'Precision': 0.12777, 'Recall': 0.2863, 'NDCG': 0.27524}
+Layer 3:{'Hit Ratio': 0.28951, 'Precision': 0.12562, 'Recall': 0.2801, 'NDCG': 0.26945}
+Layer 4:{'Hit Ratio': 0.3063, 'Precision': 0.1329, 'Recall': 0.29797, 'NDCG': 0.28709}
+------------------------------------------------------------------------------------------
+When layer=1:Layer 0:{'Hit Ratio': 0.1218, 'Precision': 0.06816, 'Recall': 0.16627, 'NDCG': 0.14025}
+Layer 1:{'Hit Ratio': 0.1218, 'Precision': 0.06816, 'Recall': 0.16627, 'NDCG': 0.14025}
+When layer=2:Layer 0:{'Hit Ratio': 0.1218, 'Precision': 0.06816, 'Recall': 0.16627, 'NDCG': 0.14025}
+Layer 1:{'Hit Ratio': 0.12353, 'Precision': 0.06913, 'Recall': 0.16168, 'NDCG': 0.14183}
+Layer 2:{'Hit Ratio': 0.12925, 'Precision': 0.07233, 'Recall': 0.17097, 'NDCG': 0.14842}
+When layer=3:Layer 0:{'Hit Ratio': 0.1218, 'Precision': 0.06816, 'Recall': 0.16627, 'NDCG': 0.14025}
+Layer 1:{'Hit Ratio': 0.12363, 'Precision': 0.06918, 'Recall': 0.1622, 'NDCG': 0.14207}
+Layer 2:{'Hit Ratio': 0.12886, 'Precision': 0.07211, 'Recall': 0.16484, 'NDCG': 0.14821}
+Layer 3:{'Hit Ratio': 0.1325, 'Precision': 0.07415, 'Recall': 0.17249, 'NDCG': 0.15244}
+When layer=4:Layer 0:{'Hit Ratio': 0.1218, 'Precision': 0.06816, 'Recall': 0.16627, 'NDCG': 0.14025}
+Layer 1:{'Hit Ratio': 0.12383, 'Precision': 0.0693, 'Recall': 0.1612, 'NDCG': 0.14221}
+Layer 2:{'Hit Ratio': 0.12909, 'Precision': 0.07224, 'Recall': 0.16658, 'NDCG': 0.14858}
+Layer 3:{'Hit Ratio': 0.1145, 'Precision': 0.06408, 'Recall': 0.14946, 'NDCG': 0.11955}
+Layer 4:{'Hit Ratio': 0.13064, 'Precision': 0.07311, 'Recall': 0.16991, 'NDCG': 0.14898}
+------------------------------------------------------------------------------------------
+When layer=1:Layer 0:{'Hit Ratio': 0.05658, 'Precision': 0.02896, 'Recall': 0.06423, 'NDCG': 0.05289}
+Layer 1:{'Hit Ratio': 0.05658, 'Precision': 0.02896, 'Recall': 0.06423, 'NDCG': 0.05289}
+When layer=2:Layer 0:{'Hit Ratio': 0.05658, 'Precision': 0.02896, 'Recall': 0.06423, 'NDCG': 0.05289}
+Layer 1:{'Hit Ratio': 0.05732, 'Precision': 0.02934, 'Recall': 0.06461, 'NDCG': 0.05336}
+Layer 2:{'Hit Ratio': 0.05966, 'Precision': 0.03053, 'Recall': 0.06717, 'NDCG': 0.0555}
+When layer=3:Layer 0:{'Hit Ratio': 0.05658, 'Precision': 0.02896, 'Recall': 0.06423, 'NDCG': 0.05289}
+Layer 1:{'Hit Ratio': 0.05729, 'Precision': 0.02932, 'Recall': 0.06452, 'NDCG': 0.05331}
+Layer 2:{'Hit Ratio': 0.05936, 'Precision': 0.03038, 'Recall': 0.06742, 'NDCG': 0.05545}
+Layer 3:{'Hit Ratio': 0.06041, 'Precision': 0.03092, 'Recall': 0.06829, 'NDCG': 0.05628}
+When layer=4:Layer 0:{'Hit Ratio': 0.05658, 'Precision': 0.02896, 'Recall': 0.06423, 'NDCG': 0.05289}
+Layer 1:{'Hit Ratio': 0.0573, 'Precision': 0.02933, 'Recall': 0.06456, 'NDCG': 0.05335}
+Layer 2:{'Hit Ratio': 0.0591, 'Precision': 0.03025, 'Recall': 0.06702, 'NDCG': 0.05524}
+Layer 3:{'Hit Ratio': 0.05625, 'Precision': 0.02879, 'Recall': 0.06321, 'NDCG': 0.05214}
+Layer 4:{'Hit Ratio': 0.05988, 'Precision': 0.03064, 'Recall': 0.06755, 'NDCG': 0.05569}

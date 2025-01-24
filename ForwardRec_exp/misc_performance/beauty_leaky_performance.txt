@@ -1,0 +1,14 @@
+When leaky=50:At layer 0{'Hit Ratio': 0.15381, 'Precision': 0.0174, 'Recall': 0.14764, 'NDCG': 0.08387}
+At layer 1{'Hit Ratio': 0.15686, 'Precision': 0.01775, 'Recall': 0.14868, 'NDCG': 0.08445}
+When leaky=100:At layer 0{'Hit Ratio': 0.15381, 'Precision': 0.0174, 'Recall': 0.14734, 'NDCG': 0.08377}
+At layer 1{'Hit Ratio': 0.15691, 'Precision': 0.01775, 'Recall': 0.14882, 'NDCG': 0.08473}
+When leaky=150:At layer 0{'Hit Ratio': 0.15381, 'Precision': 0.0174, 'Recall': 0.14742, 'NDCG': 0.0838}
+At layer 1{'Hit Ratio': 0.15676, 'Precision': 0.01774, 'Recall': 0.14848, 'NDCG': 0.08461}
+When leaky=200:At layer 0{'Hit Ratio': 0.15363, 'Precision': 0.01738, 'Recall': 0.14735, 'NDCG': 0.08379}
+At layer 1{'Hit Ratio': 0.15676, 'Precision': 0.01774, 'Recall': 0.14855, 'NDCG': 0.08452}
+When leaky=250:At layer 0{'Hit Ratio': 0.15353, 'Precision': 0.01737, 'Recall': 0.14766, 'NDCG': 0.08366}
+At layer 1{'Hit Ratio': 0.15706, 'Precision': 0.01777, 'Recall': 0.14875, 'NDCG': 0.08435}
+When leaky=300:At layer 0{'Hit Ratio': 0.15374, 'Precision': 0.01739, 'Recall': 0.14797, 'NDCG': 0.08379}
+At layer 1{'Hit Ratio': 0.15716, 'Precision': 0.01778, 'Recall': 0.14923, 'NDCG': 0.08423}
+When leaky=350:At layer 0{'Hit Ratio': 0.15389, 'Precision': 0.01741, 'Recall': 0.14742, 'NDCG': 0.08378}
+At layer 1{'Hit Ratio': 0.15701, 'Precision': 0.01777, 'Recall': 0.14898, 'NDCG': 0.08469}

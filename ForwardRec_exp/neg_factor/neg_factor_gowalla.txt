@@ -1,0 +1,20 @@
+When neg_factor=0.010000:At layer 0{'Hit Ratio': 0.18304, 'Precision': 0.06482, 'Recall': 0.21695, 'NDCG': 0.1717}
+At layer 1{'Hit Ratio': 0.18569, 'Precision': 0.06576, 'Recall': 0.22051, 'NDCG': 0.174}
+When neg_factor=0.020000:At layer 0{'Hit Ratio': 0.18235, 'Precision': 0.06458, 'Recall': 0.215, 'NDCG': 0.16973}
+At layer 1{'Hit Ratio': 0.18577, 'Precision': 0.06579, 'Recall': 0.21779, 'NDCG': 0.17212}
+When neg_factor=0.030000:At layer 0{'Hit Ratio': 0.17905, 'Precision': 0.06341, 'Recall': 0.21073, 'NDCG': 0.16559}
+At layer 1{'Hit Ratio': 0.18217, 'Precision': 0.06452, 'Recall': 0.21426, 'NDCG': 0.16896}
+When neg_factor=0.040000:At layer 0{'Hit Ratio': 0.17556, 'Precision': 0.06217, 'Recall': 0.20877, 'NDCG': 0.16406}
+At layer 1{'Hit Ratio': 0.17967, 'Precision': 0.06363, 'Recall': 0.21095, 'NDCG': 0.16647}
+When neg_factor=0.050000:At layer 0{'Hit Ratio': 0.173, 'Precision': 0.06127, 'Recall': 0.20657, 'NDCG': 0.16223}
+At layer 1{'Hit Ratio': 0.17777, 'Precision': 0.06296, 'Recall': 0.21039, 'NDCG': 0.16532}
+When neg_factor=0.060000:At layer 0{'Hit Ratio': 0.17117, 'Precision': 0.06062, 'Recall': 0.20374, 'NDCG': 0.16044}
+At layer 1{'Hit Ratio': 0.17616, 'Precision': 0.06239, 'Recall': 0.2092, 'NDCG': 0.16457}
+When neg_factor=0.070000:At layer 0{'Hit Ratio': 0.16977, 'Precision': 0.06012, 'Recall': 0.2041, 'NDCG': 0.16006}
+At layer 1{'Hit Ratio': 0.1753, 'Precision': 0.06208, 'Recall': 0.20831, 'NDCG': 0.16373}
+When neg_factor=0.080000:At layer 0{'Hit Ratio': 0.16838, 'Precision': 0.05963, 'Recall': 0.20162, 'NDCG': 0.15824}
+At layer 1{'Hit Ratio': 0.174, 'Precision': 0.06162, 'Recall': 0.20656, 'NDCG': 0.16269}
+When neg_factor=0.090000:At layer 0{'Hit Ratio': 0.16726, 'Precision': 0.05924, 'Recall': 0.20093, 'NDCG': 0.15783}
+At layer 1{'Hit Ratio': 0.17295, 'Precision': 0.06125, 'Recall': 0.20551, 'NDCG': 0.16181}
+When neg_factor=0.100000:At layer 0{'Hit Ratio': 0.166, 'Precision': 0.05879, 'Recall': 0.1988, 'NDCG': 0.15596}
+At layer 1{'Hit Ratio': 0.17243, 'Precision': 0.06107, 'Recall': 0.20427, 'NDCG': 0.16038}

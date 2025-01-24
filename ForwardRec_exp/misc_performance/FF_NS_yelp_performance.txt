@@ -1,0 +1,43 @@
+When lamda=0.005000,eps=0.000000:At layer 0{'Hit Ratio': 0.06206, 'Precision': 0.03176, 'Recall': 0.0706, 'NDCG': 0.05803}
+At layer 1{'Hit Ratio': 0.06248, 'Precision': 0.03198, 'Recall': 0.07089, 'NDCG': 0.05832}
+When lamda=0.005000,eps=0.100000:At layer 0{'Hit Ratio': 0.06189, 'Precision': 0.03167, 'Recall': 0.07047, 'NDCG': 0.05787}
+At layer 1{'Hit Ratio': 0.06231, 'Precision': 0.03189, 'Recall': 0.0709, 'NDCG': 0.05826}
+When lamda=0.005000,eps=0.200000:At layer 0{'Hit Ratio': 0.06188, 'Precision': 0.03167, 'Recall': 0.07059, 'NDCG': 0.05792}
+At layer 1{'Hit Ratio': 0.06233, 'Precision': 0.0319, 'Recall': 0.07077, 'NDCG': 0.0581}
+When lamda=0.005000,eps=0.300000:At layer 0{'Hit Ratio': 0.06197, 'Precision': 0.03171, 'Recall': 0.07044, 'NDCG': 0.05793}
+At layer 1{'Hit Ratio': 0.06243, 'Precision': 0.03195, 'Recall': 0.07079, 'NDCG': 0.05821}
+When lamda=0.005000,eps=0.400000:At layer 0{'Hit Ratio': 0.0617, 'Precision': 0.03158, 'Recall': 0.07007, 'NDCG': 0.05757}
+At layer 1{'Hit Ratio': 0.0622, 'Precision': 0.03183, 'Recall': 0.07058, 'NDCG': 0.05803}
+
+When lamda=0.005000,eps=0.000000:At layer 0{'Hit Ratio': 0.06244, 'Precision': 0.03196, 'Recall': 0.07105, 'NDCG': 0.05841}
+At layer 1{'Hit Ratio': 0.06235, 'Precision': 0.03191, 'Recall': 0.07096, 'NDCG': 0.05635}
+When lamda=0.005000,eps=0.100000:At layer 0{'Hit Ratio': 0.06274, 'Precision': 0.03211, 'Recall': 0.0716, 'NDCG': 0.05861}
+At layer 1{'Hit Ratio': 0.06294, 'Precision': 0.03221, 'Recall': 0.07163, 'NDCG': 0.05871}
+When lamda=0.005000,eps=0.200000:At layer 0{'Hit Ratio': 0.06276, 'Precision': 0.03212, 'Recall': 0.07104, 'NDCG': 0.05836}
+At layer 1{'Hit Ratio': 0.06284, 'Precision': 0.03216, 'Recall': 0.07133, 'NDCG': 0.05873}
+When lamda=0.005000,eps=0.300000:At layer 0{'Hit Ratio': 0.06306, 'Precision': 0.03228, 'Recall': 0.0718, 'NDCG': 0.05893}
+At layer 1{'Hit Ratio': 0.0631, 'Precision': 0.03229, 'Recall': 0.07178, 'NDCG': 0.05905}
+When lamda=0.005000,eps=0.400000:At layer 0{'Hit Ratio': 0.06297, 'Precision': 0.03223, 'Recall': 0.07163, 'NDCG': 0.05882}
+At layer 1{'Hit Ratio': 0.06274, 'Precision': 0.03211, 'Recall': 0.07131, 'NDCG': 0.05852}
+When lamda=0.005000,eps=0.500000:At layer 0{'Hit Ratio': 0.06295, 'Precision': 0.03222, 'Recall': 0.07156, 'NDCG': 0.05866}
+At layer 1{'Hit Ratio': 0.06319, 'Precision': 0.03234, 'Recall': 0.0718, 'NDCG': 0.05874}
+When lamda=0.005000,eps=0.600000:At layer 0{'Hit Ratio': 0.06333, 'Precision': 0.03241, 'Recall': 0.0719, 'NDCG': 0.05886}
+At layer 1{'Hit Ratio': 0.06306, 'Precision': 0.03228, 'Recall': 0.07178, 'NDCG': 0.05907}
+When lamda=0.010000,eps=0.500000:At layer 0{'Hit Ratio': 0.06313, 'Precision': 0.03231, 'Recall': 0.07183, 'NDCG': 0.05875}
+At layer 1{'Hit Ratio': 0.06305, 'Precision': 0.03227, 'Recall': 0.07151, 'NDCG': 0.05876}
+When lamda=0.050000,eps=0.400000:At layer 0{'Hit Ratio': 0.06351, 'Precision': 0.0325, 'Recall': 0.07247, 'NDCG': 0.05919}
+At layer 1{'Hit Ratio': 0.06349, 'Precision': 0.03249, 'Recall': 0.07223, 'NDCG': 0.05919}
+When lamda=0.050000,eps=0.500000:At layer 0{'Hit Ratio': 0.06367, 'Precision': 0.03258, 'Recall': 0.07227, 'NDCG': 0.05919}
+At layer 1{'Hit Ratio': 0.06382, 'Precision': 0.03266, 'Recall': 0.07236, 'NDCG': 0.05939}
+When lamda=0.100000,eps=0.400000:At layer 0{'Hit Ratio': 0.06376, 'Precision': 0.03263, 'Recall': 0.07259, 'NDCG': 0.05942}
+At layer 1{'Hit Ratio': 0.06384, 'Precision': 0.03267, 'Recall': 0.07262, 'NDCG': 0.05959}
+When lamda=0.100000,eps=0.500000:At layer 0{'Hit Ratio': 0.06384, 'Precision': 0.03267, 'Recall': 0.07256, 'NDCG': 0.05955}
+At layer 1{'Hit Ratio': 0.06413, 'Precision': 0.03282, 'Recall': 0.07256, 'NDCG': 0.0597}
+When lamda=0.500000,eps=0.400000:At layer 0{'Hit Ratio': 0.06382, 'Precision': 0.03266, 'Recall': 0.07264, 'NDCG': 0.05974}
+At layer 1{'Hit Ratio': 0.06426, 'Precision': 0.03289, 'Recall': 0.07304, 'NDCG': 0.05991}
+When lamda=0.500000,eps=0.500000:At layer 0{'Hit Ratio': 0.06402, 'Precision': 0.03277, 'Recall': 0.07263, 'NDCG': 0.05957}
+At layer 1{'Hit Ratio': 0.06431, 'Precision': 0.03291, 'Recall': 0.07304, 'NDCG': 0.06003}
+When lamda=1.000000,eps=0.400000:At layer 0{'Hit Ratio': 0.06373, 'Precision': 0.03262, 'Recall': 0.07251, 'NDCG': 0.05957}
+At layer 1{'Hit Ratio': 0.06393, 'Precision': 0.03272, 'Recall': 0.07262, 'NDCG': 0.05978}
+When lamda=1.000000,eps=0.500000:At layer 0{'Hit Ratio': 0.06391, 'Precision': 0.03271, 'Recall': 0.0725, 'NDCG': 0.05954}
+At layer 1{'Hit Ratio': 0.06373, 'Precision': 0.03262, 'Recall': 0.07199, 'NDCG': 0.05916}

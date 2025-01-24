@@ -1,0 +1,22 @@
+When pos_factor=20:At layer 0{'Hit Ratio': 0.31981, 'Precision': 0.13876, 'Recall': 0.31153, 'NDCG': 0.29886}
+At layer 1{'Hit Ratio': 0.32377, 'Precision': 0.14048, 'Recall': 0.31474, 'NDCG': 0.30312}
+When pos_factor=18:At layer 0{'Hit Ratio': 0.32111, 'Precision': 0.13933, 'Recall': 0.31222, 'NDCG': 0.30035}
+At layer 1{'Hit Ratio': 0.32359, 'Precision': 0.1404, 'Recall': 0.31482, 'NDCG': 0.30327}
+When pos_factor=16:At layer 0{'Hit Ratio': 0.32098, 'Precision': 0.13927, 'Recall': 0.31236, 'NDCG': 0.30028}
+At layer 1{'Hit Ratio': 0.32408, 'Precision': 0.14062, 'Recall': 0.31523, 'NDCG': 0.30415}
+When pos_factor=14:At layer 0{'Hit Ratio': 0.32173, 'Precision': 0.1396, 'Recall': 0.31367, 'NDCG': 0.30082}
+At layer 1{'Hit Ratio': 0.32513, 'Precision': 0.14108, 'Recall': 0.31685, 'NDCG': 0.30412}
+When pos_factor=12:At layer 0{'Hit Ratio': 0.32055, 'Precision': 0.13909, 'Recall': 0.31213, 'NDCG': 0.30056}
+At layer 1{'Hit Ratio': 0.32458, 'Precision': 0.14083, 'Recall': 0.31585, 'NDCG': 0.30434}
+When pos_factor=10:At layer 0{'Hit Ratio': 0.32105, 'Precision': 0.1393, 'Recall': 0.3131, 'NDCG': 0.30138}
+At layer 1{'Hit Ratio': 0.32458, 'Precision': 0.14083, 'Recall': 0.3166, 'NDCG': 0.30469}
+When pos_factor=8:At layer 0{'Hit Ratio': 0.32074, 'Precision': 0.13917, 'Recall': 0.31256, 'NDCG': 0.30133}
+At layer 1{'Hit Ratio': 0.326, 'Precision': 0.14145, 'Recall': 0.31752, 'NDCG': 0.30523}
+When pos_factor=6:At layer 0{'Hit Ratio': 0.32105, 'Precision': 0.1393, 'Recall': 0.31257, 'NDCG': 0.30034}
+At layer 1{'Hit Ratio': 0.32569, 'Precision': 0.14132, 'Recall': 0.31761, 'NDCG': 0.3047}
+When pos_factor=4:At layer 0{'Hit Ratio': 0.32061, 'Precision': 0.13911, 'Recall': 0.31188, 'NDCG': 0.30081}
+At layer 1{'Hit Ratio': 0.32551, 'Precision': 0.14124, 'Recall': 0.31682, 'NDCG': 0.3056}
+When pos_factor=2:At layer 0{'Hit Ratio': 0.32098, 'Precision': 0.13927, 'Recall': 0.31273, 'NDCG': 0.30126}
+At layer 1{'Hit Ratio': 0.32476, 'Precision': 0.14091, 'Recall': 0.31695, 'NDCG': 0.30512}
+When pos_factor=0:At layer 0{'Hit Ratio': 0.32049, 'Precision': 0.13906, 'Recall': 0.31215, 'NDCG': 0.30086}
+At layer 1{'Hit Ratio': 0.32575, 'Precision': 0.14134, 'Recall': 0.31781, 'NDCG': 0.30549}

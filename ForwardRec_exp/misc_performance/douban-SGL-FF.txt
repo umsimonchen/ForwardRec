@@ -1,0 +1,8 @@
+LAMBDA	DROP	PERFORMANCE
+0.05	0.2	['Top 20\n', 'Hit Ratio:0.12992\n', 'Precision:0.0727\n', 'Recall:0.17443\n', 'NDCG:0.15107\n']
+0.1	0.1	['Top 20\n', 'Hit Ratio:0.13013\n', 'Precision:0.07282\n', 'Recall:0.17746\n', 'NDCG:0.15271\n']
+0.1	0.2	['Top 20\n', 'Hit Ratio:0.13128\n', 'Precision:0.07347\n', 'Recall:0.17692\n', 'NDCG:0.15237\n']
+0.1	0.3	['Top 20\n', 'Hit Ratio:0.13107\n', 'Precision:0.07335\n', 'Recall:0.17836\n', 'NDCG:0.15435\n']
+0.5	0.1	['Top 20\n', 'Hit Ratio:0.12763\n', 'Precision:0.07142\n', 'Recall:0.17276\n', 'NDCG:0.14784\n']
+0.5	0.2	['Top 20\n', 'Hit Ratio:0.12824\n', 'Precision:0.07176\n', 'Recall:0.17359\n', 'NDCG:0.14654\n']
+0.5	0.5	['Top 20\n', 'Hit Ratio:0.1266\n', 'Precision:0.07084\n', 'Recall:0.17485\n', 'NDCG:0.14716\n']

@@ -1,0 +1,32 @@
+When neg_factor=0.001000:At layer 0{'Hit Ratio': 0.12229, 'Precision': 0.01384, 'Recall': 0.11661, 'NDCG': 0.0676}
+At layer 1{'Hit Ratio': 0.12672, 'Precision': 0.01434, 'Recall': 0.12149, 'NDCG': 0.06865}
+When neg_factor=0.002000:At layer 0{'Hit Ratio': 0.12886, 'Precision': 0.01458, 'Recall': 0.12421, 'NDCG': 0.07045}
+At layer 1{'Hit Ratio': 0.13547, 'Precision': 0.01533, 'Recall': 0.12937, 'NDCG': 0.07234}
+When neg_factor=0.005000:At layer 0{'Hit Ratio': 0.13605, 'Precision': 0.01539, 'Recall': 0.12911, 'NDCG': 0.07355}
+At layer 1{'Hit Ratio': 0.14388, 'Precision': 0.01628, 'Recall': 0.13601, 'NDCG': 0.07642}
+When neg_factor=0.010000:At layer 0{'Hit Ratio': 0.14227, 'Precision': 0.0161, 'Recall': 0.1339, 'NDCG': 0.07593}
+At layer 1{'Hit Ratio': 0.14955, 'Precision': 0.01692, 'Recall': 0.14084, 'NDCG': 0.07843}
+When neg_factor=0.020000:At layer 0{'Hit Ratio': 0.15023, 'Precision': 0.017, 'Recall': 0.14346, 'NDCG': 0.07942}
+At layer 1{'Hit Ratio': 0.15384, 'Precision': 0.01741, 'Recall': 0.14609, 'NDCG': 0.0811}
+When neg_factor=0.050000:At layer 0{'Hit Ratio': 0.1519, 'Precision': 0.01719, 'Recall': 0.14634, 'NDCG': 0.08054}
+At layer 1{'Hit Ratio': 0.15608, 'Precision': 0.01766, 'Recall': 0.14864, 'NDCG': 0.0821}
+When neg_factor=0.100000:At layer 0{'Hit Ratio': 0.1495, 'Precision': 0.01692, 'Recall': 0.14355, 'NDCG': 0.07888}
+At layer 1{'Hit Ratio': 0.1528, 'Precision': 0.01729, 'Recall': 0.14805, 'NDCG': 0.08052}
+When neg_factor=0.200000:At layer 0{'Hit Ratio': 0.1489, 'Precision': 0.01685, 'Recall': 0.14316, 'NDCG': 0.0788}
+At layer 1{'Hit Ratio': 0.15069, 'Precision': 0.01705, 'Recall': 0.14545, 'NDCG': 0.08011}
+When neg_factor=0.500000:At layer 0{'Hit Ratio': 0.14668, 'Precision': 0.0166, 'Recall': 0.14133, 'NDCG': 0.07684}
+At layer 1{'Hit Ratio': 0.1459, 'Precision': 0.01651, 'Recall': 0.13923, 'NDCG': 0.07671}
+When neg_factor=1.000000:At layer 0{'Hit Ratio': 0.14345, 'Precision': 0.01623, 'Recall': 0.13841, 'NDCG': 0.07538}
+At layer 1{'Hit Ratio': 0.1425, 'Precision': 0.01612, 'Recall': 0.13689, 'NDCG': 0.07502}
+When dataset=amazon-beauty, neg_factor=0.030000:At layer 0{'Hit Ratio': 0.15253, 'Precision': 0.01726, 'Recall': 0.14676, 'NDCG': 0.08089}
+At layer 1{'Hit Ratio': 0.1558, 'Precision': 0.01763, 'Recall': 0.14741, 'NDCG': 0.08176}
+When dataset=amazon-beauty, neg_factor=0.040000:At layer 0{'Hit Ratio': 0.15091, 'Precision': 0.01708, 'Recall': 0.14557, 'NDCG': 0.08073}
+At layer 1{'Hit Ratio': 0.15512, 'Precision': 0.01755, 'Recall': 0.14824, 'NDCG': 0.08163}
+When dataset=amazon-beauty, neg_factor=0.060000:At layer 0{'Hit Ratio': 0.15066, 'Precision': 0.01705, 'Recall': 0.14518, 'NDCG': 0.08042}
+At layer 1{'Hit Ratio': 0.15505, 'Precision': 0.01754, 'Recall': 0.14854, 'NDCG': 0.08219}
+When dataset=amazon-beauty, neg_factor=0.070000:At layer 0{'Hit Ratio': 0.15096, 'Precision': 0.01708, 'Recall': 0.14563, 'NDCG': 0.08035}
+At layer 1{'Hit Ratio': 0.15429, 'Precision': 0.01746, 'Recall': 0.14839, 'NDCG': 0.08152}
+When dataset=amazon-beauty, neg_factor=0.080000:At layer 0{'Hit Ratio': 0.14975, 'Precision': 0.01694, 'Recall': 0.14355, 'NDCG': 0.07978}
+At layer 1{'Hit Ratio': 0.15348, 'Precision': 0.01737, 'Recall': 0.14702, 'NDCG': 0.08112}
+When dataset=amazon-beauty, neg_factor=0.090000:At layer 0{'Hit Ratio': 0.15021, 'Precision': 0.017, 'Recall': 0.144, 'NDCG': 0.0796}
+At layer 1{'Hit Ratio': 0.15394, 'Precision': 0.01742, 'Recall': 0.14857, 'NDCG': 0.08126}
