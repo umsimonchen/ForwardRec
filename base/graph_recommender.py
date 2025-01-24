@@ -125,6 +125,6 @@ class GraphRecommender(Recommender):
         print('*Best Performance* ')
         print('Epoch:', str(self.bestPerformance[0]) + ',', bp)
         print('-' * 120)
-        if epoch-self.bestPerformance[0]+1==50:
+        if epoch-self.bestPerformance[0]+1==50: #update the early stop step
             early_stopping = True
         return measure, early_stopping

@@ -28,7 +28,10 @@ class FileIO(object):
                     items = split('\s|\t', line.strip())
                     user_id = items[0]
                     item_id = items[1]
-                    weight = items[2]
+                    try:
+                        weight = items[2]
+                    except:
+                        weight = 1.
                     data.append([user_id, item_id, float(weight)])
 
         if rec_type == 'sequential':
