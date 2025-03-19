@@ -3,16 +3,17 @@ from util.conf import ModelConf
 
 if __name__ == '__main__':
     # Register your model here
-    graph_baselines = ['g1. MF','g2. APPNP','g3. DirectAU','g4.LightGCN', 'g5. LTGNN', 'g6. ForwardRec', 'g7. CoRec']
+    graph_baselines = ['g1. MF','g2. APPNP','g3. DirectAU','g4. LightGCN', 'g5. LTGNN', 'g6. ForwardRec']
     graph_signal = ['gs1. LGCN', 'gs2. PGSP', 'gs3. JGCF', 'gs4. SGFCF']
     hypergraph = ['hg1. DHCF', 'hg2. HCCF']
     social_recommendations = ['sr1. DiffNet', 'sr2. DiffNet++', 'sr3. MHCN', 'sr4. SEPT']
     negative_sampling = ['ns1. MixGCF', 'ns2. DENS']
-    ssl_graph_models = ['sg1. SGL', 'sg2. BUIR','sg3. SSL4Rec', 'sg4. SimGCL', 'sg5. NCL', 'sg6. AdaGCL', 'sg7.SelfCF ', 'sg8. LightGCL', 'sg9.  XSimGCL']
+    ssl_graph_models = ['sg1. SGL', 'sg2. BUIR','sg3. SSL4Rec', 'sg4. SimGCL', 'sg5. NCL', 'sg6. AdaGCL', 'sg7.SelfCF ', \
+                        'sg8. LightGCL', 'sg9. XSimGCL', 'sg10. EGCF', 'sg11. SCCF', 'sg12. RecDCL', 'sg13. SGCL']
     sequential_baselines= ['s1. SASRec', 's2. FBABRF']
     ssl_sequential_models = ['ss1. CL4SRec','ss2. DuoRec','ss3. BERT4Rec']
-    diffusion_models = ['d1. DiffRec', 'd2. L-DiffRec', 'd3. DiffGraph']
-    test_models = ['1. test1']
+    diffusion_models = ['d1. DiffRec', 'd2. L-DiffRec', 'd3. BSPM', 'd4. GiffCF', 'd5. DDRM']
+    test_models = ['1. test1', '2. CoRec', '3. DiffGraph']
 
     print('=' * 80)
     print('   SELFRec: A library for self-supervised recommendation.   ')
@@ -34,7 +35,8 @@ if __name__ == '__main__':
     print('   '.join(negative_sampling))
     print('-' * 100)
     print('Self-Supervised Graph-Based Models:')
-    print('   '.join(ssl_graph_models))
+    for i in range(len(ssl_graph_models)//7 + 1):   
+        print('   '.join(ssl_graph_models[i*7:(i+1)*7]))
     print('=' * 80)
     print('Sequential Baseline Models:')
     print('   '.join(sequential_baselines))
@@ -48,20 +50,21 @@ if __name__ == '__main__':
     print('Test template:')
     print('   '.join(test_models))
     print('-' * 80)
-    model = input('Please enter the model you want to run:').lower()
+    model = 'sg8'#input('Please enter the model you want to run:').lower()
     import time
 
     s = time.time()
-    code2model = {'g1':'MF', 'g2':'APPNP', 'g3':'DirectAU', 'g4':'LightGCN', 'g5':'LTGNN', 'g6':'ForwardRec', 'g7':'CoRec',
+    code2model = {'g1':'MF', 'g2':'APPNP', 'g3':'DirectAU', 'g4':'LightGCN', 'g5':'LTGNN', 'g6':'ForwardRec',
                   'gs1':'LGCN', 'gs2':'PGSP', 'gs3':'JGCF', 'gs4': 'SGFCF',
                   'hg1':'DHCF', 'hg2':'HCCF',
                   'sr1':'DiffNet', 'sr2':'DiffNetPlus', 'sr3':'MHCN', 'sr4':'SEPT',
                   'ns1':'MixGCF', 'ns2':'DENS',
-                  'sg1':'SGL', 'sg2':'BUIR', 'sg3':'SSL4Rec', 'sg4':'SimGCL', 'sg5':'NCL', 'sg6':'AdaGCL', 'sg7':'SelfCF', 'sg8':'LightGCL', 'sg9':'XSimGCL',
+                  'sg1':'SGL', 'sg2':'BUIR', 'sg3':'SSL4Rec', 'sg4':'SimGCL', 'sg5':'NCL', 'sg6':'AdaGCL', 'sg7':'SelfCF', \
+                      'sg8':'LightGCL', 'sg9':'XSimGCL', 'sg10':'EGCF', 'sg11':'SCCF', 'sg12':'RecDCL', 'sg13': 'SGCL',
                   's1':'SASRec', 's2':'FBABRF',
                   'ss1':'CL4SRec', 'ss2':'DuoRec', 'ss3':'BERT4Rec',
-                  'd1': 'DiffRec', 'd2': 'L_DiffRec', 'd3': 'DiffGraph',
-                  '1': 'test'}
+                  'd1': 'DiffRec', 'd2': 'L_DiffRec', 'd3': 'BSPM', 'd4': 'GiffCF', 'd5': 'DDRM',
+                  '1': 'test', '2': 'CoRec', '3': 'DiffGraph'}
     try:
         conf = ModelConf('./conf/' + code2model[model] + '.conf')
     except:
