@@ -41,7 +41,7 @@ class DiffRec(GraphRecommender):
         optimizer = torch.optim.Adam(model.parameters(), lr=self.lRate)
         early_stopping = False
         epoch = 0
-        while not early_stopping:
+        while not early_stopping :
             batch_idx = torch.randperm(self.data.user_num)[:self.batch_size]
             losses = model(batch_idx)
             loss = losses["loss"].mean()

@@ -30,12 +30,11 @@ class LightGCL(GraphRecommender):
     def __init__(self, conf, training_set, test_set):
         super(LightGCL, self).__init__(conf, training_set, test_set)
         args = OptionConf(self.config['LightGCL'])
-        self.n_layers = int(args['-n_layer'])
-        self.cl_rate = float(args['-lambda'])
-        aug_type = int(args['-augtype'])
+        n_layers = int(args['-n_layer'])
         drop_rate = float(args['-droprate'])
         temp = float(args['-temp'])
-        self.model = LightGCL_Encoder(self.data, self.emb_size, self.n_layers, aug_type, drop_rate, temp)
+        self.lambda_1 = float(args['-lambda_1'])
+        self.model = LightGCL_Encoder(self.data, self.emb_size, n_layers, drop_rate, temp)
 
     def train(self):
         record_list = []
@@ -45,22 +44,14 @@ class LightGCL(GraphRecommender):
         early_stopping = False
         epoch = 0
         while not early_stopping:
-            self.dropped_adj = model.graph_reconstruction()
             for n, batch in enumerate(next_batch_pairwise(self.data, self.batch_size)):
                 user_idx, pos_idx, neg_idx = batch
-                all_embeddings, all_low_rank_embeddings = model(self.dropped_adj)
-                
-                final_all_embeddings = torch.sum(all_embeddings, dim=0)
-                rec_user_emb = final_all_embeddings[:self.data.user_num]
-                rec_item_emb = final_all_embeddings[self.data.user_num:]
+                rec_user_emb, rec_item_emb = model()
                 
                 user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
-                batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
-                cl_loss = 0
-                for k in range(self.n_layers):
-                    cl_loss += self.cl_rate * model.cal_cl_loss([user_idx], all_embeddings[k][:self.data.user_num], all_low_rank_embeddings[k][:self.data.user_num])
-                    cl_loss += self.cl_rate * model.cal_cl_loss([pos_idx], all_embeddings[k][self.data.user_num:], all_low_rank_embeddings[k][self.data.user_num:])
-                total_loss = batch_loss + cl_loss
+                batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, model.embedding_dict['user_emb'], model.embedding_dict['item_emb'])/self.batch_size
+                cl_loss = model.cal_cl_loss(user_idx, pos_idx+neg_idx)
+                total_loss = batch_loss + self.lambda_1 * cl_loss
                 
                 # Backward and optimize
                 optimizer.zero_grad()
@@ -69,10 +60,7 @@ class LightGCL(GraphRecommender):
                 if n % 100==0 and n>0:
                     print('training:', epoch + 1, 'batch', n, 'batch_loss:', batch_loss.item())
             with torch.no_grad():
-                all_embeddings, _ = model(self.dropped_adj)
-                all_embeddings = torch.sum(all_embeddings, dim=0)
-                self.user_emb = all_embeddings[:self.data.user_num]
-                self.item_emb = all_embeddings[self.data.user_num:]
+                self.user_emb, self.item_emb = model()
                 
             measure, early_stopping = self.fast_evaluation(epoch)
             record_list.append(measure)
@@ -81,34 +69,53 @@ class LightGCL(GraphRecommender):
         self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
         with open('performance.txt','a') as fp:
             fp.write(str(self.bestPerformance[1])+"\n")
-        # record training loss        
-        with open('training_record','wb') as fp:
-            pickle.dump([record_list, loss_list], fp)
 
     def save(self):
         with torch.no_grad():
-            all_embeddings, _ = self.model.forward(self.dropped_adj)
-            all_embeddings = torch.sum(all_embeddings, dim=0)
-            self.best_user_emb = all_embeddings[:self.data.user_num]
-            self.best_item_emb = all_embeddings[self.data.user_num:]
-
+            self.best_user_emb, self.best_item_emb = self.model.forward()
+            
     def predict(self, u):
         u = self.data.get_user_id(u)
         score = torch.matmul(self.user_emb[u], self.item_emb.transpose(0, 1))
         return score.cpu().numpy()
 
 class LightGCL_Encoder(nn.Module):
-    def __init__(self, data, emb_size, n_layers, aug_type, drop_rate, temp):
+    def __init__(self, data, emb_size, n_layers, drop_rate, temp):
         super(LightGCL_Encoder, self).__init__()
         self.data = data
         self.latent_size = emb_size
         self.layers = n_layers
-        self.norm_adj = data.norm_adj
-        self.aug_type = aug_type
+        self.norm_inter = data.norm_inter
         self.drop_rate = drop_rate
         self.temp = temp
         self.embedding_dict = self._init_model()
-        self.sparse_norm_adj = TorchGraphInterface.convert_sparse_mat_to_tensor(self.norm_adj).cuda()
+        self.sparse_norm_inter = TorchGraphInterface.convert_sparse_mat_to_tensor(self.norm_inter).cuda()
+        
+        self.E_u_list = [None] * (self.layers+1)
+        self.E_i_list = [None] * (self.layers+1)
+        self.E_u_list[0] = self.embedding_dict['user_emb']
+        self.E_i_list[0] = self.embedding_dict['item_emb']
+        self.Z_u_list = [None] * (self.layers+1)
+        self.Z_i_list = [None] * (self.layers+1)
+        self.G_u_list = [None] * (self.layers+1)
+        self.G_i_list = [None] * (self.layers+1)
+        self.G_u_list[0] = self.embedding_dict['user_emb']
+        self.G_i_list[0] = self.embedding_dict['item_emb']
+        self.act = nn.LeakyReLU(0.5)
+        
+        self.E_u = None
+        self.E_i = None
+        
+        svd_u, s, svd_v = torch.svd_lowrank(self.sparse_norm_inter, q=5) # default constant
+
+        u_mul_s = svd_u @ torch.diag(s)
+        v_mul_s = svd_v @ torch.diag(s)
+
+        self.ut = svd_u.T
+        self.vt = svd_v.T
+        self.u_mul_s = u_mul_s
+        self.v_mul_s = v_mul_s
+        del s
 
     def _init_model(self):
         initializer = nn.init.xavier_uniform_
@@ -117,62 +124,46 @@ class LightGCL_Encoder(nn.Module):
             'item_emb': nn.Parameter(initializer(torch.empty(self.data.item_num, self.latent_size))),
         })
         return embedding_dict
-    
-    def graph_reconstruction(self):
-        if self.aug_type==0 or 1:
-            dropped_adj = self.random_graph_augment()
-        else:
-            dropped_adj = []
-            for k in range(self.n_layers):
-                dropped_adj.append(self.random_graph_augment())
-        return dropped_adj
 
-    def random_graph_augment(self):
-        dropped_mat = None
-        if self.aug_type == 0:
-            dropped_mat = GraphAugmentor.node_dropout(self.data.interaction_mat, self.drop_rate)
-        elif self.aug_type == 1 or self.aug_type == 2:
-            dropped_mat = GraphAugmentor.edge_dropout(self.data.interaction_mat, self.drop_rate)
-        dropped_mat = self.data.convert_to_laplacian_mat(dropped_mat)
+    def sparse_dropout(self):
+        dropped_mat = GraphAugmentor.node_dropout(self.data.interaction_mat, self.drop_rate)
+        dropped_mat = self.data.sparse_adjacency_matrix_R(dropped_mat)
         return TorchGraphInterface.convert_sparse_mat_to_tensor(dropped_mat).cuda()
     
-    def forward(self, dropped_adj):
+    def forward(self):
+        for layer in range(1, self.layers+1):
+            # GNN propagation
+            self.Z_u_list[layer] = (torch.spmm(self.sparse_dropout(), self.E_i_list[layer-1]))
+            self.Z_i_list[layer] = (torch.spmm(self.sparse_dropout().transpose(0,1), self.E_u_list[layer-1]))
+
+            # svd_adj propagation
+            vt_ei = self.vt @ self.E_i_list[layer-1]
+            self.G_u_list[layer] = (self.u_mul_s @ vt_ei)
+            ut_eu = self.ut @ self.E_u_list[layer-1]
+            self.G_i_list[layer] = (self.v_mul_s @ ut_eu)
+
+            # aggregate
+            self.E_u_list[layer] = self.Z_u_list[layer]
+            self.E_i_list[layer] = self.Z_i_list[layer]
+            
+        self.G_u = sum(self.G_u_list)
+        self.G_i = sum(self.G_i_list)
+
+        # aggregate across layers
+        self.E_u = sum(self.E_u_list)
+        self.E_i = sum(self.E_i_list)
         
-        # please get the eigenvalues and eigenvectors by eigendecomp.py
-        with open('dataset/gowalla/PGSP', 'rb') as fp: # choose the dataset folder
-            eigen = pickle.load(fp)
-        val = eigen[0]
-        vec = eigen[1]
-        self.e = torch.tensor(vec).cuda().float()
-        self.v = torch.tensor(val).cuda().float()
-        
-        ego_embeddings = torch.cat([self.embedding_dict['user_emb'], self.embedding_dict['item_emb']], 0)
-        all_embeddings = [ego_embeddings]
-        all_low_rank_embeddings = [ego_embeddings]
-        for k in range(self.layers):
-            # ego_embeddings = nn.LeakyReLU(0.5)(torch.sparse.mm(norm_dropped_adj, all_embeddings[-1]))
-            # all_embeddings += [ego_embeddings + all_embeddings[-1]]
-            
-            # ego_low_rank_embeddings = nn.LeakyReLU(0.5)(torch.matmul(low_rank_graph, all_low_rank_embeddings[-1]))
-            # all_low_rank_embeddings = [ego_low_rank_embeddings]
-            
-            # LightGCN based message passing performs better after comparison
-            ego_embeddings = torch.sparse.mm(dropped_adj, all_embeddings[-1])
-            all_embeddings += [ego_embeddings]
-            
-            ego_low_rank_embeddings = torch.matmul(torch.matmul(self.e, torch.diag(self.v)), torch.matmul(self.e.transpose(0, 1), all_low_rank_embeddings[-1]))
-            all_low_rank_embeddings += [ego_low_rank_embeddings]
-            
-        all_embeddings = torch.stack(all_embeddings, dim=0)
-        all_low_rank_embeddings = torch.stack(all_low_rank_embeddings, dim=0)
-        
-        return all_embeddings, all_low_rank_embeddings
+        return self.E_u, self.E_i
     
-    def cal_cl_loss(self, idx, view1, view2):
-        idx = torch.unique(torch.Tensor(idx).type(torch.long)).cuda()
-        # user_cl_loss = InfoNCE(user_view_1[u_idx], user_view_2[u_idx], self.temp)
-        # item_cl_loss = InfoNCE(item_view_1[i_idx], item_view_2[i_idx], self.temp)
-        #return user_cl_loss + item_cl_loss
-        return InfoNCE(view1[idx],view2[idx],self.temp)
+    def cal_cl_loss(self, uids, iids):
+        G_u_norm = self.G_u
+        E_u_norm = self.E_u
+        G_i_norm = self.G_i
+        E_i_norm = self.E_i
+        neg_score = torch.log(torch.exp(G_u_norm[uids] @ E_u_norm.T / self.temp).sum(1) + 1e-8).mean()
+        neg_score += torch.log(torch.exp(G_i_norm[iids] @ E_i_norm.T / self.temp).sum(1) + 1e-8).mean()
+        pos_score = (torch.clamp((G_u_norm[uids] * E_u_norm[uids]).sum(1) / self.temp,-5.0,5.0)).mean() + (torch.clamp((G_i_norm[iids] * E_i_norm[iids]).sum(1) / self.temp,-5.0,5.0)).mean()
+        loss_s = -pos_score + neg_score
+        return loss_s
 
 

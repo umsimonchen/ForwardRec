@@ -29,11 +29,11 @@ class JGCF(GraphRecommender):
     def __init__(self, conf, training_set, test_set):
         super(JGCF, self).__init__(conf, training_set, test_set)
         args = OptionConf(self.config['JGCF'])
-        self.n_layers = int(args['-n_layer'])
-        self.a = float(args['-a'])
+        self.layers = int(args['-layers'])
+        self.a = float(args['-a'].replace('"',''))
         self.b = float(args['-b'])
-        self.alpha = float(args['-alpha'])
-        self.model = JGCF_Encoder(self.data, self.emb_size, self.n_layers, self.a, self.b, self.alpha)
+        self.beta = float(args['-alpha'])
+        self.model = JGCF_Encoder(self.data, self.layers, self.emb_size, self.a, self.b, self.beta)
 
     def train(self):
         record_list = []
@@ -48,7 +48,9 @@ class JGCF(GraphRecommender):
                 rec_user_emb, rec_item_emb = model()
                 
                 user_emb, pos_item_emb, neg_item_emb = rec_user_emb[user_idx], rec_item_emb[pos_idx], rec_item_emb[neg_idx]
-                batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, user_emb,pos_item_emb,neg_item_emb)/self.batch_size
+                u_ego_embeddings, pos_ego_embeddings, neg_ego_embeddings = \
+                    model.embedding_dict['user_emb'][user_idx], model.embedding_dict['item_emb'][pos_idx], model.embedding_dict['item_emb'][neg_idx]
+                batch_loss = bpr_loss(user_emb, pos_item_emb, neg_item_emb) + l2_reg_loss(self.reg, u_ego_embeddings, pos_ego_embeddings, neg_ego_embeddings)/self.batch_size
                 # Backward and optimize
                 optimizer.zero_grad()
                 batch_loss.backward()
@@ -78,18 +80,22 @@ class JGCF(GraphRecommender):
         return score.cpu().numpy()
 
 class JGCF_Encoder(nn.Module):
-    def __init__(self, data, emb_size, n_layers, a, b, alpha):
+    def __init__(self, data, layers, emb_size, a, b, beta):
         super(JGCF_Encoder, self).__init__()
         self.data = data
         self.latent_size = emb_size
-        self.layers = n_layers
+        self.layers = layers
         self.a = a
         self.b = b
-        self.alpha = alpha
+        self.beta = beta
+        self.basealpha = 3.0 # default constant for 3 layers
+        self.alphas = nn.ParameterList([
+            nn.Parameter(torch.tensor(float(min(1 / self.basealpha, 1))),
+                         requires_grad=not True) for i in range(self.layers + 1)
+        ])
         self.norm_adj = data.norm_adj
         self.embedding_dict = self._init_model()
         self.sparse_norm_adj = TorchGraphInterface.convert_sparse_mat_to_tensor(self.norm_adj).cuda()
-        self.dense_norm_adj = self.sparse_norm_adj.to_dense()
 
     def _init_model(self):
         initializer = nn.init.xavier_uniform_
@@ -99,34 +105,42 @@ class JGCF_Encoder(nn.Module):
         })
         return embedding_dict
 
+    def JacobiConv(self, L, xs, adj, alphas, a=1.0, b=1.0, l=-1.0, r=1.0):
+        if L == 0: return xs[0]
+        if L == 1:
+            coef1 = (a - b) / 2 - (a + b + 2) / 2 * (l + r) / (r - l)
+            coef1 *= alphas[0]
+            coef2 = (a + b + 2) / (r - l)
+            coef2 *= alphas[0]
+            return coef1 * xs[-1] + coef2 * (adj @ xs[-1])
+        coef_l = 2 * L * (L + a + b) * (2 * L - 2 + a + b)
+        coef_lm1_1 = (2 * L + a + b - 1) * (2 * L + a + b) * (2 * L + a + b - 2)
+        coef_lm1_2 = (2 * L + a + b - 1) * (a**2 - b**2)
+        coef_lm2 = 2 * (L - 1 + a) * (L - 1 + b) * (2 * L + a + b)
+        tmp1 = alphas[L - 1] * (coef_lm1_1 / coef_l)
+        tmp2 = alphas[L - 1] * (coef_lm1_2 / coef_l)
+        tmp3 = alphas[L - 1] * alphas[L - 2] * (coef_lm2 / coef_l)
+        tmp1_2 = tmp1 * (2 / (r - l))
+        tmp2_2 = tmp1 * ((r + l) / (r - l)) + tmp2
+        nx = tmp1_2 * (adj @ xs[-1]) - tmp2_2 * xs[-1]
+        nx -= tmp3 * xs[-2]
+        return nx
+    
     def forward(self):
-        ego_embeddings = torch.cat([self.embedding_dict['user_emb'], self.embedding_dict['item_emb']], 0)
-        jacobi_all_embeddings = [ego_embeddings]
-        r = 1.0
-        l = -1.0
-        for k in range(self.layers):
-            cur_layer = k+1
-            if cur_layer == 1:
-                jacobi_all_embeddings += [(self.a-self.b)/2 * (l+r)/(r-l) + (self.a+self.b+2)/(r-l) * torch.sparse.mm(self.sparse_norm_adj, jacobi_all_embeddings[0])]
-            else:
-                coef_l = 2 * cur_layer * (cur_layer + self.a + self.b) * (2 * cur_layer - 2 + self.a + self.b)
-                coef_lm1_1 = (2 * cur_layer + self.a + self.b - 1) * (2 * cur_layer + self.a + self.b) * (2 * cur_layer + self.a + self.b - 2)
-                coef_lm1_2 = (2 * cur_layer + self.a + self.b - 1) * (self.a**2 - self.b**2)
-                coef_lm2 = 2 * (cur_layer - 1 + self.a) * (cur_layer - 1 + self.b) * (2 * cur_layer + self.a + self.b)
-                tmp1 = coef_lm1_1 / coef_l
-                tmp2 = coef_lm1_2 / coef_l
-                tmp3 = coef_lm2 / coef_l
+        all_embeddings = torch.cat([self.embedding_dict['user_emb'], self.embedding_dict['item_emb']], 0)
+        alphas = [self.basealpha * torch.tanh(_) for _ in self.alphas]
+        xs = [self.JacobiConv(0, [all_embeddings], self.sparse_norm_adj, alphas, self.a, self.b)]
+        for L in range(1, self.layers + 1):
+            tx = self.JacobiConv(L, xs, self.sparse_norm_adj, alphas, self.a, self.b)
+            xs.append(tx)
+        xs = [x.unsqueeze(1) for x in xs]
+        all_embeddings_low = torch.cat(xs, dim=1)
+        all_embeddings_low = all_embeddings_low.mean(1)
+        all_embeddings_mid = self.beta * all_embeddings - all_embeddings_low
+        all_embeddings = torch.hstack([all_embeddings_low, all_embeddings_mid])
 
-                tmp1_2 = tmp1 * (2/(r-l))
-                tmp2_2 = tmp1 * (r+l) / (r-l) + tmp2
-                
-                jacobi_all_embeddings += [tmp1_2 * (torch.sparse.mm(self.sparse_norm_adj, jacobi_all_embeddings[-1]) + tmp2_2 * jacobi_all_embeddings[-1]) - tmp3 * jacobi_all_embeddings[-2]]
-
-        band_stop = torch.mean(torch.stack(jacobi_all_embeddings, dim=1), dim=1)
-        band_pass = self.alpha*jacobi_all_embeddings[0] - band_stop
-        final_embeddings = torch.cat([band_stop, band_pass], dim=1)
-        user_all_embeddings = final_embeddings[:self.data.user_num]
-        item_all_embeddings = final_embeddings[self.data.user_num:]
+        user_all_embeddings, item_all_embeddings = torch.split(all_embeddings, [self.data.user_num, self.data.item_num])
+        
         return user_all_embeddings, item_all_embeddings
 
 
