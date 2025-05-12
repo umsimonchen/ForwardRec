@@ -16,7 +16,7 @@ torch>=1.7.0
 </ol>
 
 <h2>Ablated Variants</h2>
-We provide the variants shown in ablation analysis for LightGCN, LGCN, DHCF, SGL, and MixGCF. The codes are placed in their model file along with their original codes. Please uncomment the corresponding code while using.
+We provide the variants shown in ablation analysis for LightGCN, LGCN, DHCF, SGL, and MixGCF. The codes are placed in the model file along with their original codes. Please uncomment the corresponding code for proper running.
 
 <h2>Large Datasets</h2>
-Please download the MovieLens-10M on https://files.grouplens.org/datasets/movielens/ml-10m.zip and place it into the folder "dataset/ml-10M" and split the dataset into the training set and the test set by "split.py".
+Due to the large files, please download the MovieLens-10M on https://files.grouplens.org/datasets/movielens/ml-10m.zip and place it into the folder "dataset/ml-10M" and split the dataset into the training set and the test set by "split.py".
