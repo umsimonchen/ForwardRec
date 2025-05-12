@@ -16,6 +16,7 @@ class GraphRecommender(Recommender):
         top = self.ranking['-topN'].split(',')
         self.topN = [int(num) for num in top]
         self.max_N = max(self.topN)
+        self.early_stopping_epoch = 50
 
     def print_model_info(self):
         super(GraphRecommender, self).print_model_info()
@@ -125,6 +126,7 @@ class GraphRecommender(Recommender):
         print('*Best Performance* ')
         print('Epoch:', str(self.bestPerformance[0]) + ',', bp)
         print('-' * 120)
-        if epoch-self.bestPerformance[0]+1==50: #update the early stop step
+        #if epoch-self.bestPerformance[0]+1>=self.training_epoches[self.current_layer]: #update the early stop step
+        if epoch-self.bestPerformance[0]+1>= 50: # testing
             early_stopping = True
         return measure, early_stopping
