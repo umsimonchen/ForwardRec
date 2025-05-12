@@ -42,7 +42,18 @@ class ForwardRec(GraphRecommender):
         self.binary_data_t = torch.tensor(self.binary_data, dtype=torch.bool)
         self.observed_adj = torch.sparse_coo_tensor(torch.stack([self.binary_row_t, self.binary_col_t]), self.binary_data_t, (self.data.user_num, self.data.item_num), dtype=torch.bool)
         self.unobserved_adj = ~(self.observed_adj.to_dense()).cuda()
-    
+        
+        # training epoches for layers
+        self.schedule = 'linear-var' # default constant
+        sep = np.linspace(0,1,self.n_layers+1)
+        if self.schedule == 'linear':
+            pass
+        elif self.schedule == 'cosine':
+            sep = 1-np.cos(np.pi/2*sep)
+        elif self.schedule == 'linear-var':
+            sep = np.sqrt(1-np.cumprod(1-sep))
+        self.training_epoches = (np.roll(sep,-1) - sep)[:self.n_layers] * self.early_stopping_epoch
+        
     def train(self):
         record_list = []
         loss_list = []
