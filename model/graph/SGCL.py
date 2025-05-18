@@ -35,8 +35,8 @@ class SGCL(GraphRecommender):
         drop_rate = float(args['-droprate'])
         n_layers = int(args['-n_layer'])
         temp = float(args['-temp'])
-        num_negative = 1 # default constant
-        self.model = SGL_Encoder(self.data, self.emb_size, drop_rate, n_layers, temp, num_negative, aug_type)
+        self.num_negative = 1 # default constant
+        self.model = SGL_Encoder(self.data, self.emb_size, drop_rate, n_layers, temp, self.num_negative, aug_type)
 
     def train(self):
         model = self.model.cuda()

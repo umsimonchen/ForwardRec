@@ -9,6 +9,8 @@ import pickle
 import scipy.sparse as sp
 from sparsesvd import sparsesvd
 from torchdiffeq import odeint
+import math
+import sys
 # paper: Blurring-Sharpening Process Models for Collaborative Filtering. SIGIR'23
 # https://github.com/jeongwhanchoi/BSPM/tree/main
 
@@ -36,22 +38,33 @@ class BSPM(GraphRecommender):
         self.model = BSPM_Encoder(self.data, self.emb_size, self.idl_beta, self.sharpen_T, self.sharpen_K,  self.sharpen_solver)
 
     def train(self):
-        self.model = self.model.cuda()
-        epoch = 0
-        measure, early_stopping = self.fast_evaluation(epoch)
+        model = self.model.cuda()
+        
+        # whole dataset training
+        # self.score = model() 
+        
+        # training by batch-slice in case of OOM on large datasets
+        total_batch = math.ceil(self.data.user_num/self.batch_size)
+        lst_score = []
+        for i in range(total_batch):
+            batch_test = model.convert_sp_mat_to_sp_tensor(model.adj_mat[i*self.batch_size:(i+1)*self.batch_size]).cuda()
+            lst_score.append(model(batch_test).cpu().numpy())
+            print("Finished Batch:%d / %d."%(i+1,total_batch))
+        self.score = np.concatenate(lst_score, axis=0)
+        
+        measure, early_stopping = self.fast_evaluation(0)
         with open('performance.txt','a') as fp:
             fp.write(str(self.bestPerformance[1])+"\n")
+        sys.exit() # tested by fast evaluation
 
     def save(self):
         with torch.no_grad():
-            self.score = self.model.forward()
+            self.best_score = self.score
 
     def predict(self, u):
         u = self.data.get_user_id(u)
-        with torch.no_grad():
-            score = self.model.forward(u)
-            score = score.reshape(-1)
-        return score.cpu().numpy()
+        score = self.score[u]
+        return score
 
 class BSPM_Encoder(nn.Module):
     def __init__(self, data, emb_size, idl_beta, sharpen_T, sharpen_K, sharpen_solver):
@@ -63,15 +76,15 @@ class BSPM_Encoder(nn.Module):
         self.t_point_combination = False # default constant, True: Use the combination of t points
 
         # row-normalization
-        adj_mat = data.interaction_mat # m*n
-        rowsum = np.array(adj_mat.sum(axis=1)) # m
+        self.adj_mat = data.interaction_mat # m*n
+        rowsum = np.array(self.adj_mat.sum(axis=1)) # m
         d_inv = np.power(rowsum, -0.5).flatten() 
         d_inv[np.isinf(d_inv)] = 0.
         d_mat = sp.diags(d_inv) # m*m
-        norm_adj = d_mat.dot(adj_mat) # m*n
+        norm_adj = d_mat.dot(self.adj_mat) # m*n
         
         # column-normalization
-        colsum = np.array(adj_mat.sum(axis=0)) # n
+        colsum = np.array(self.adj_mat.sum(axis=0)) # n
         d_inv = np.power(colsum, -0.5).flatten()
         d_inv[np.isinf(d_inv)] = 0.
         d_mat = sp.diags(d_inv) # n*n
@@ -90,6 +103,9 @@ class BSPM_Encoder(nn.Module):
         left_mat = self.d_mat_i @ self.vt.T # V^{-1/2}U, n*k
         right_mat = self.vt @ self.d_mat_i_inv # U^{\top}V^{1/2}, k*n
         self.left_mat, self.right_mat = torch.FloatTensor(left_mat).cuda(), torch.FloatTensor(right_mat).cuda() # n*k, k*n
+        del left_mat
+        del right_mat
+        
         
         # time-step
         idl_T = 1 # default constant
@@ -106,9 +122,6 @@ class BSPM_Encoder(nn.Module):
         self.idl_solver = 'euler' # default constant
         self.blur_solver = 'euler' # default constant
         self.sharpen_solver = sharpen_solver
-        
-        # sparse interaction tensor
-        self.adj_mat =  self.convert_sp_mat_to_sp_tensor(adj_mat).to_dense().cuda() # m*n
     
     def convert_sp_mat_to_sp_tensor(self, X):
         coo = X.tocoo().astype(np.float32)
@@ -122,15 +135,13 @@ class BSPM_Encoder(nn.Module):
         out = r @ self.linear_Filter
         return -out
     
-    def forward(self, user_idx=None):
-        if user_idx == None:
-            batch_test = self.adj_mat
-        else:
-            batch_test = self.adj_mat[user_idx].reshape(1,-1)
+    def forward(self, batch_test=None):
+        if batch_test == None:
+            self.convert_sp_mat_to_sp_tensor(self.adj_mat).cuda() # m*nself.sparse_adj_norm
         
         with torch.no_grad():
-            idl_out = torch.mm(batch_test, self.left_mat @ self.right_mat)
-            blurred_out = torch.mm(batch_test, self.linear_Filter)
+            idl_out = torch.sparse.mm(batch_test, self.left_mat @ self.right_mat)
+            blurred_out = torch.sparse.mm(batch_test, self.linear_Filter)
             del batch_test
             
             if self.final_sharpening == True:
