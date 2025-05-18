@@ -10,7 +10,7 @@ if __name__ == '__main__':
     negative_sampling = ['ns1. MixGCF', 'ns2. DENS', 'ns3. AHNS']
     ssl_graph_models = ['sg1. SGL', 'sg2. BUIR','sg3. SSL4Rec', 'sg4. SimGCL', 'sg5. NCL', 'sg6. AdaGCL', 'sg7.SelfCF ', \
                         'sg8. LightGCL', 'sg9. XSimGCL', 'sg10. EGCF', 'sg11. SCCF', 'sg12. RecDCL', 'sg13. SGCL']
-    sequential_baselines= ['s1. SASRec', 's2. FBABRF']
+    sequential_baselines= ['s1. SASRec']
     ssl_sequential_models = ['ss1. CL4SRec','ss2. DuoRec','ss3. BERT4Rec']
     generative_models = ['a1. CDAE', 'a2. MultiVAE', 'd1. DiffRec', 'd2. L-DiffRec', 'd3. BSPM', 'd4. GiffCF', 'd5. DDRM', 'd6. PreferDiff', 'd7. HDRM']
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
                   'ns1':'MixGCF', 'ns2':'DENS', 'ns3':'AHNS',
                   'sg1':'SGL', 'sg2':'BUIR', 'sg3':'SSL4Rec', 'sg4':'SimGCL', 'sg5':'NCL', 'sg6':'AdaGCL', 'sg7':'SelfCF', \
                       'sg8':'LightGCL', 'sg9':'XSimGCL', 'sg10':'EGCF', 'sg11':'SCCF', 'sg12':'RecDCL', 'sg13': 'SGCL',
-                  's1':'SASRec', 's2':'FBABRF',
+                  's1':'SASRec',
                   'ss1':'CL4SRec', 'ss2':'DuoRec', 'ss3':'BERT4Rec',
                   'a1':'CDAE', 'a2':'MultiVAE',
                   'd1': 'DiffRec', 'd2': 'L_DiffRec', 'd3': 'BSPM', 'd4': 'GiffCF', 'd5': 'DDRM', 'd6': 'PreferDiff', 'd7': 'HDRM'}
