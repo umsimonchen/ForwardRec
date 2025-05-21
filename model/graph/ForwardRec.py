@@ -52,7 +52,11 @@ class ForwardRec(GraphRecommender):
             sep = 1-np.cos(np.pi/2*sep)
         elif self.schedule == 'linear-var':
             sep = np.sqrt(1-np.cumprod(1-sep))
-        self.training_epoches = (np.roll(sep,-1) - sep)[:self.n_layers] * self.early_stopping_epoch
+        self.training_epoches = np.round((np.roll(sep,-1) - sep)[:self.n_layers] * self.early_stopping_epoch)
+        if self.training_epoches.sum() < self.early_stopping_epoch:
+            self.training_epoches[-1] += 1
+        elif self.training_epoches.sum() > self.early_stopping_epoch:
+            self.training_epoches[-1] -= 1
         
     def train(self):
         record_list = []
