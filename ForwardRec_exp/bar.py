@@ -20,7 +20,7 @@ from matplotlib.ticker import FuncFormatter
 #plt.rcParams['font.sans-serif'] = ['SimHei']
 
 font = {'family' : 'Calibri',
-        'weight' : 'normal',
+        'weight' : 'bold',
         'size'   : 16}
 
 matplotlib.rc('font', **font)
@@ -65,9 +65,9 @@ ff_tt = [75,204,341,1368,1026]
 x = np.arange(len(labels))  # the label locations
 width = 0.2  # the width of the bars
 fig1, ax1 = plt.subplots(1,3,figsize=(16, 6))
-plt.subplots_adjust(top=0.795,
+plt.subplots_adjust(top=0.76,
 bottom=0.05,
-left=0.055,
+left=0.07,
 right=0.995,
 hspace=0.17,
 wspace=0.33)
@@ -96,29 +96,29 @@ rects15 = ax1[2].bar(x + width/3*4, ff_tt, width/3*2, label='ForwardRec', color=
 # ax1[2].yaxis.set_major_formatter(FuncFormatter(exp_format))
 
 # Add some text for labels, title and custom x-axis tick labels, etc.
-ax1[0].set_ylabel('Time (seconds)', fontsize=30)
-ax1[0].set_title('Time per Epoch', fontsize=30)
+ax1[0].set_ylabel('Time (seconds)', fontsize=45)
+ax1[0].set_title('Time per Epoch', fontsize=40)
 ax1[0].set_xticks(x)
 ax1[0].set_xticklabels(labels)
 ax1[0].set_yscale('log')
 ax1[0].grid(linestyle='--',alpha=0.5)
 
-ax1[1].set_ylabel('Epoch Number', fontsize=30)
-ax1[1].set_title('Epoch', fontsize=30)
+ax1[1].set_ylabel('Epoch Number', fontsize=45)
+ax1[1].set_title('Epoch', fontsize=40)
 ax1[1].set_xticks(x)
 ax1[1].set_xticklabels(labels)
 ax1[1].set_yscale('log')
 ax1[1].grid(linestyle='--',alpha=0.5)
 
-ax1[2].set_ylabel('Time (seconds)', fontsize=30)
-ax1[2].set_title('Total Time', fontsize=30)
+ax1[2].set_ylabel('Time (seconds)', fontsize=45)
+ax1[2].set_title('Total Time', fontsize=40)
 ax1[2].set_xticks(x)
 ax1[2].set_xticklabels(labels)
 ax1[2].set_yscale('log')
 ax1[2].grid(linestyle='--',alpha=0.5)
 
 handles, labels = ax1[0].get_legend_handles_labels()
-fig1.legend(handles, labels, loc='upper center', ncol=5, fontsize=20)
+fig1.legend(handles, labels, loc='upper center', ncol=5, fontsize=28)
 
 plt.subplot_tool()
 plt.show()
