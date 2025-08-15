@@ -9,13 +9,16 @@ import pickle
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-n_layer", type=int)
+parser.add_argument("-dataset", type=str)
+parser.add_argument("-alpha", type=float)
 args = parser.parse_args()
 
-with open('conf/LGCN.conf', 'r') as fp:
+with open('conf/DINS.conf', 'r') as fp:
     lines = fp.readlines()
 
-lines[10] = "LGCN=-n_layer %d -frequency 100"%(args.n_layer)+"\n"
+lines[0] = "training.set=./dataset/%s/train.txt"%(args.dataset)+"\n"
+lines[1] = "test.set=./dataset/%s/test.txt"%(args.dataset)+"\n"
+lines[10] = "DINS=-n_layer 2 -alpha %f -candidate 64"%(args.alpha)+"\n"
 
-with open('conf/LGCN.conf', 'w') as fp:
+with open('conf/DINS.conf', 'w') as fp:
     fp.writelines(lines)

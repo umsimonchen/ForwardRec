@@ -19,7 +19,7 @@ for elem in l:
     try:
         res = re.split(':|,', elem[1])
     except:
-        break
+        continue
     for index in [1,3,5,7]:
         try:
             data.append(float(res[index].strip()))

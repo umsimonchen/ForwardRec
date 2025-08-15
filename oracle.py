@@ -6,7 +6,7 @@ Created on Tue May 21 21:56:26 2024
 """
 
 all_test_records = {}
-with open('dataset/lastfm/test.txt', 'r') as fp:
+with open('dataset/amazon-beauty/test.txt', 'r') as fp:
     all_test = fp.readlines()
 
 for line in all_test:
