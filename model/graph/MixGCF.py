@@ -46,6 +46,24 @@ class MixGCF(GraphRecommender):
             record_list.append(measure)
             loss_list.append(batch_loss.item())
             epoch += 1
+            
+        # # visualize negative samples
+        # neg_item = []
+        # batch_label = []
+        # for group, (i,j) in enumerate(zip(neg_idx, user_idx)):
+        #     flag=False
+        #     neg_item.append(self.data.id2item[i])
+        #     for k in range(self.n_negs):
+        #         if self.data.id2item[group*self.n_negs+k] in self.data.test_set[self.data.id2user[j]].keys():
+        #             flag=True
+        #             break
+        #     if flag:
+        #         batch_label.append('Positive')
+        #     else:
+        #         batch_label.append('Negative')
+        # with open('MixGCF', 'wb') as fp:
+        #     pickle.dump([neg_item, batch_label, pos_item_emb.detach().cpu().numpy(), neg_item_emb.detach().cpu().numpy()], fp)            
+        
         self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
         with open('performance.txt','a') as fp:
             fp.write(str(self.bestPerformance[1])+"\n")

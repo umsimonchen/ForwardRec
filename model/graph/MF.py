@@ -6,6 +6,7 @@ from util.loss_torch import bpr_loss,l2_reg_loss
 import numpy as np
 import os 
 import random
+import pickle
 
 # paper: Matrix Factorization Techniques for Recommender Systems, Computer'09
 
@@ -48,7 +49,23 @@ class MF(GraphRecommender):
                 self.user_emb, self.item_emb = self.model()
             _, early_stopping = self.fast_evaluation(epoch)
             epoch += 1
-        self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
+            
+        # visualize negative samples
+        # neg_item = []
+        # batch_label = []
+        # for i,j in zip(neg_idx, user_idx):
+        #     neg_item.append(self.data.id2item[i])
+        #     if self.data.id2item[i] in self.data.test_set[self.data.id2user[j]].keys():
+        #         pass
+        #         batch_label.append('True Positive')
+        #     else:
+        #         batch_label.append('Hard Negative')
+        # with open('RNS', 'wb') as fp:
+        #     pickle.dump([neg_item, batch_label, rec_item_emb[pos_idx].detach().cpu().numpy(), rec_item_emb[neg_idx].detach().cpu().numpy()], fp)            
+        
+        # self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
+        # with open('usesr','wb') as fp:
+        #     pickle.dump([self.user_emb.detach().cpu().numpy(), self.item_emb.detach().cpu().numpy()], fp)
 
     def save(self):
         with torch.no_grad():

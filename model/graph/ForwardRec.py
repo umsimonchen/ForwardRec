@@ -52,11 +52,7 @@ class ForwardRec(GraphRecommender):
             sep = 1-np.cos(np.pi/2*sep)
         elif self.schedule == 'linear-var':
             sep = np.sqrt(1-np.cumprod(1-sep))
-        self.training_epoches = np.round((np.roll(sep,-1) - sep)[:self.n_layers] * self.early_stopping_epoch)
-        if self.training_epoches.sum() < self.early_stopping_epoch:
-            self.training_epoches[-1] += 1
-        elif self.training_epoches.sum() > self.early_stopping_epoch:
-            self.training_epoches[-1] -= 1
+        self.training_epoches = (np.roll(sep,-1) - sep)[:self.n_layers] * self.early_stopping_epoch
         
     def train(self):
         record_list = []
@@ -118,8 +114,8 @@ class ForwardRec(GraphRecommender):
                     optimizer.step()
                     if n%100 == 0 and n > 0:
                         print('layer:', self.current_layer, 'training:', epoch + 1, 'batch', n, 'batch_loss:', batch_loss.item())
-                        
-				   # Validation
+                                
+				# Validation
                 with torch.no_grad():
                     print("\nLayer %d:"%self.current_layer)
                     self.user_emb, self.item_emb = model()
@@ -157,6 +153,20 @@ class ForwardRec(GraphRecommender):
                 e = time.time()
                 print("Time used: %f s"%(e-s))
             all_performances.append(self.bestPerformance[1])
+            
+            # visualize negative samples
+            # neg_item = []
+            # batch_label = []
+            # neg_idx_np = neg_idx.detach().cpu().numpy()
+            # for i,j in zip(neg_idx_np, user_idx):
+            #     neg_item.append(self.data.id2item[i])
+            #     if self.data.id2item[i] in self.data.test_set[self.data.id2user[j]].keys():
+            #         batch_label.append('Positive')
+            #     else:
+            #         batch_label.append('Negative')
+            # with open('ForwardRec_', 'wb') as fp:
+            #     pickle.dump([neg_item, batch_label, rec_item_emb[pos_idx].detach().cpu().numpy(), rec_item_emb[neg_idx].detach().cpu().numpy()], fp)            
+            
         self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
         
         # record performance

@@ -81,6 +81,25 @@ class AHNS(GraphRecommender):
             record_list.append(measure)
             loss_list.append(batch_loss.item())
             epoch += 1
+            
+        #visualize negative samples
+        # neg_item = []
+        # batch_label = []
+        # ada_neg_idx_np = ada_neg_idx.detach().cpu().numpy()
+        # for group, (i, j) in enumerate(zip(ada_neg_idx_np, user_idx)):
+        #     flag = False
+        #     neg_item.append(self.data.id2item[i])
+        #     for k in range(self.candidate):
+        #         if self.data.id2item[neg_idx[group*self.candidate+k]] in self.data.test_set[self.data.id2user[j]].keys():
+        #             flag = True
+        #             break
+        #     if flag:
+        #         batch_label.append('Positive')
+        #     else:
+        #         batch_label.append('Negative')
+        # with open('AHNS', 'wb') as fp:
+        #     pickle.dump([neg_item, batch_label, rec_item_emb[pos_idx].detach().cpu().numpy(), rec_item_emb[ada_neg_idx].detach().cpu().numpy()], fp)            
+        
         self.user_emb, self.item_emb = self.best_user_emb, self.best_item_emb
         with open('performance.txt','a') as fp:
             fp.write(str(self.bestPerformance[1])+"\n")
